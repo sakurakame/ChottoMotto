@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_4block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title th:text="'商品一覧 | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="admin item_list_admin">
+	<h2 th:class="title" th:text="商品一覧"></h2>
+	<form th:action="@{/admin/item/regist/input}" method="post" class="sign_up_form">
+		<input type="submit" value="商品新規登録" class="menu_button" th:if="${registrable}" />
+	</form>
+	<!-- /*追加登録不可メッセージ */-->
+	<ul class="error_message" th:unless="${registrable}">
+	<br/>
+		<li class="error_msg">
+			<span th:text="#{msg.admin.cannot.regist('商品'}"></span>
+		</li>
+	</ul>
+	<!--/* 登録なしメッセージ */-->
+	<div th:if="${#lists.isEmpty(items)}">
+		<p th:text="#{msg.admin.list.none('商品')}"></p>
+	</div>
+	<!--/* 一覧表示 */-->
+	<table class="list_table item_list" th:if="!${#lists.isEmpty(items)}">
+		<tr>
+			<th>ID</th>
+			<th>商品名</th>
+			<th>価格</th>
+			<th>カテゴリ</th>
+			<th>操作</th>
+		</tr>
+		<!--/* 商品情報 */-->
+		<tr th:each="item: ${items}">
+			<td th:text="${item.id}"></td>
+			<td><a th:href="@{/admin/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+			<td th:text="${item.price}"></td>
+			<td th:text="${item.category.name}"></td>
+			<td>
+				<form th:action="@{/admin/item/update/input/{id}(id=${item.id})}" method="post">
+					<input type="submit" value="変更" />
+				</form>
+				<form th:action="@{/admin/item/delete/check/{id}(id=${item.id})}" method="post">
+					<input type="submit" value="削除" class="delete" />
+				</form>
+			</td>
+		</tr>
+	</table>
+	<!--/* ページング */-->
+	<ul class="paging" th:if="!${#lists.isEmpty(items)}">
+		<li th:class="${pages.first} ? 'disabled':''">
+			<span th:if="${pages.first}">&lt;&lt;</span>
+			<a th:if="${not pages.first}" th:href="@{${url}(page=0)}">&lt;&lt;</a>
+		</li>
+		<li th:each='i : ${#numbers.sequence(0, pages.totalPages-1)}' th:class="(${i}==${pages.number})? 'active' : ''">
+			<span th:if='${i}==${pages.number}' th:text='${i+1}'>1</span>
+			<a th:if='${i}!=${pages.number}' th:href="@{${url}(page=${i})}">
+				<span th:text='${i+1}'>1</span>
+			</a>
+		</li>
+		<li th:class="${pages.last} ? 'disabled':''">
+			<span th:if="${pages.last}">&gt;&gt;</span>
+			<a th:if="${not pages.last}" th:href="@{${url}(page=(${pages.totalPages}-1))}">&gt;&gt;</a>
+		</li>
+	</ul>
+
+
+</body>
+
+</html>

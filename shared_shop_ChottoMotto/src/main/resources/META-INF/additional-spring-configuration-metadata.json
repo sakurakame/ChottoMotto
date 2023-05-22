@@ -1,0 +1,52 @@
+{"properties": [
+  {
+    "name": "salseforce.host",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.host'"
+  },
+  {
+    "name": "salseforce.grant-service",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.grant-service'"
+  },
+  {
+    "name": "salseforce.client-id",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.client-id'"
+  },
+  {
+    "name": "salseforce.client-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.client-secret'"
+  },
+  {
+    "name": "salseforce.user-name",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.user-name'"
+  },
+  {
+    "name": "salseforce.password-and-security-token",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.password-and-security-token'"
+  },
+  {
+    "name": "salseforce.ua",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.ua'"
+  },
+  {
+    "name": "salseforce.security-token",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.security-token'"
+  },
+  {
+    "name": "salseforce.password",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.password'"
+  },
+  {
+    "name": "salseforce.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'salseforce.enabled'"
+  }
+]}

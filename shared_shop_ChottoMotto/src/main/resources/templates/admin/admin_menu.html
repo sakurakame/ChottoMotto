@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_3block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<meta charset="UTF-8" />
+	<title th:text="'管理者用メニュー | '+ #{shop.title}"> </title>
+</head>
+
+<body class="admin admin_menu">
+	<div class="admin_menu">
+		<dl class="admin_menu_list">
+			<dt class="title_area_no_shadow" th:text="管理者用メニュー"></dt>
+			<dd class="link_area"><a th:href="@{/admin/user/list}" th:text="会員一覧表示"></a></dd>
+			<th:block th:if="${session.user.authority == 1}">
+				<dd class="link_area"><a th:href="@{/admin/order/list}" th:text="注文一覧表示"></a></dd>
+				<dd class="link_area"><a th:href="@{/admin/item/list}" th:text="商品一覧表示"></a></dd>
+				<dd class="link_area"><a th:href="@{/admin/category/list}" th:text="カテゴリ一覧表示"></a></dd>
+			</th:block>
+		</dl>
+	</div>
+</body>
+
+</html>

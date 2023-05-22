@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_4block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title th:text="'商品変更入力 | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="admin item_update_input">
+	<h2 th:class="title" th:text="商品変更入力"></h2>
+	<p th:class="input_message" th:text="#{msg.update.input}"></p>
+
+	<div class="user_info_form_area">
+		<form th:action="@{/admin/item/update/check}" enctype="multipart/form-data" method="post"
+			th:object="${itemForm}">
+			<th:block th:if="${#fields.hasErrors()}">
+				<ul class="error_list">
+					<li th:each="err:${#fields.detailedErrors()}" th:text="${err.message}"></li>
+				</ul>
+				<br />
+			</th:block>
+			<ul class="input_list">
+				<li>
+					<label><span class="input_title">商品名</span></label>
+					<input type="text" th:field="*{name}" />
+				</li>
+				<li>
+					<label><span class="input_title">価格</span></label>
+					<input type="text" th:field="*{price}" />
+				</li>
+				<li>
+					<label><span class="input_title">在庫数</span></label>
+					<input type="text" th:field="*{stock}" />
+				</li>
+				<li>
+					<label><span class="input_title">カテゴリ</span></label>
+					<select name="categoryId">
+						<option th:each="category: ${categories}" th:value="${category.id}"
+							th:selected="${category.id == itemForm.categoryId}" th:text="${category.name}"></option>
+					</select>
+				</li>
+				<li>
+					<label>
+						<span class="input_title">説明文</span>
+						<textarea rows="6" th:field="*{description}"></textarea>
+					</label>
+				</li>
+				<li>
+					<label><span class="input_title">商品画像</span></label>
+					<input type="file" id="upload_file" th:field="*{imageFile}" />
+					<span th:unless="*{#strings.isEmpty(image)}">
+						<img th:src="@{/images/{image}(image=*{image})}"></img>
+					</span>
+					<span th:if="*{#strings.isEmpty(image)}">
+						<img th:src="@{/images/common/no_image.jpg}"></img>
+					</span>
+				</li>
+			</ul>
+			<button type="submit" name="id" th:value="*{id}" class="send_button" >確認</button>
+		</form>
+		<form th:action="@{/admin/item/list}" method="post">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
+	</div>
+</body>
+
+</html>

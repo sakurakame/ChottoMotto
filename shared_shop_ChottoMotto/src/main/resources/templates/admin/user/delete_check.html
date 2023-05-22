@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_4block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title th:text="'会員削除確認 | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
+</head>
+
+<body class="admin user_delete_check_admin">
+	<h2 th:class="title" th:text="会員削除確認"></h2>
+	<p th:class="check_message" th:text="#{msg.delete.check}"></p>
+	<div class="user_info_form_area" th:object=${userForm}>
+		<ul class="input_list" >
+			<li>
+				<span class="input_title">メールアドレス</span>
+				<span class="input_value" th:text="*{email}"></span>
+			</li>
+			<li>
+				<span class="input_title">氏名</span>
+				<span class="input_value" th:text="*{name}"></span>
+			</li>
+			<li>
+				<span class="input_title">郵便番号</span>
+				<span class="input_value" th:text="*{postalCode}"></span>
+			</li>
+			<li>
+				<span class="input_title">住所</span>
+				<span class="input_value" th:text="*{address}"></span>
+			</li>
+			<li>
+				<span class="input_title">電話番号</span>
+				<span class="input_value" th:text="*{phoneNumber}"></span>
+			</li>
+			<li>
+				<span class="input_title">権限</span>
+				<span class="input_value" th:switch="*{authority}">
+					<span th:case="0">システム管理者</span>
+					<span th:case="1">運用管理者</span>
+					<span th:case="2">一般会員</span>
+				</span>
+			</li>
+		</ul>
+		<form th:action="@{/admin/user/delete/complete}" method="post" class="user_info_form">
+			<input type="submit" value="削除" class="send_button delete" />
+		</form>
+		<form th:action="@{/admin/user/list}" method="post" class="user_info_form">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
+	</div>
+</body>
+
+</html>
