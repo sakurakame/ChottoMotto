@@ -16,30 +16,29 @@ public class ClientBasketController {
 	@Autowired
 	private ItemRepository repository;
 
-	private List<Item> basketItems;
-
 	@RequestMapping(path = "/client/basket/list")
 	public String showItemList(Model model) {
 		List<Item> items = repository.findAll();
 		model.addAttribute("items", items);
-		model.addAttribute("basketItems", basketItems);
 		return "client/basket/list";
 	}
 
 	@RequestMapping(path = "/client/basket/add")
-	public String addItemToBasket(@RequestParam("itemId") Integer itemId) {
+	public String addItemToBasket(@RequestParam("itemId") Integer itemId, Model model) {
+		List<Item> items = repository.findAll();
 		Item item = repository.findById(itemId).orElse(null);
 		if (item != null) {
-			basketItems.add(item);
+			items.add(item);
 		}
-
+		model.addAttribute("items", items);
 		return "redirect:/client/basket/list";
 	}
 
 	@RequestMapping(path = "/client/basket/delete")
-	public String deleteItemFromBasket(@RequestParam("itemId") Integer itemId) {
+	public String deleteItemFromBasket(@RequestParam("itemId") Integer itemId, Model model) {
+		List<Item> items = repository.findAll();
 		Item itemToRemove = null;
-		for (Item item : basketItems) {
+		for (Item item : items) {
 			if (item.getId().equals(itemId)) {
 				itemToRemove = item;
 				break;
@@ -47,15 +46,17 @@ public class ClientBasketController {
 		}
 
 		if (itemToRemove != null) {
-			basketItems.remove(itemToRemove);
+			items.remove(itemToRemove);
 		}
-
+		model.addAttribute("items",items);
 		return "redirect:/client/basket/list";
 	}
 
 	@RequestMapping(path = "/client/basket/allDelete")
-	public String deleteAllItemsFromBasket() {
-		basketItems.clear();
+	public String deleteAllItemsFromBasket(Model model) {
+		List<Item> items = repository.findAll();
+		items.clear();
+		model.addAttribute("items",items);
 		return "redirect:/client/basket/list";
 	}
 }
