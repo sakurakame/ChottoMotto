@@ -2,6 +2,7 @@ package jp.co.sss.shop.repository.salesforce;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -115,5 +116,22 @@ public class UserFromSalesforce {
 		JsonNode jsonNode = service.getInfo(soql);
 		jsonNode = jsonNode.get("records");
 		return (long) jsonNode.size();
+	}
+
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public Optional<User> findById(Integer userId) {
+		String soql = "SELECT ID__c,EMAIL__c,PASSWORD__c,NAME__c,POSTAL_CODE__c,ADDRESS__c,PHONE_NUMBER__c,AUTHORITY__c,"
+				+ "DELETE_FLAG__c FROM APIUser__c WHERE ID__c = \'" + userId + "\' AND DELETE_FLAG__c = 0";
+		JsonNode jsonNode = service.getInfo(soql);
+		jsonNode = jsonNode.get("records").get(0);
+		User user = new User(jsonNode.get("ID__c").asInt(), jsonNode.get("EMAIL__c").asText(),
+				jsonNode.get("PASSWORD__c").asText(), jsonNode.get("NAME__c").asText(),
+				jsonNode.get("POSTAL_CODE__c").asText(), jsonNode.get("ADDRESS__c").asText(),
+				jsonNode.get("PHONE_NUMBER__c").asText(), jsonNode.get("AUTHORITY__c").asInt());
+		return Optional.of(user);
 	}
 }

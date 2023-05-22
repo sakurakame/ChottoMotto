@@ -1,5 +1,7 @@
 package jp.co.sss.shop.repository;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -105,6 +107,14 @@ public class UserDao {
 			return salesforceRepo.count();
 		} else {
 			return repository.count();
+		}
+	}
+
+	public Optional<User> findById(Integer userId) {
+		if (isSalesforce) {
+			return salesforceRepo.findById(userId);
+		} else {
+			return repository.findById(userId);
 		}
 	}
 }
