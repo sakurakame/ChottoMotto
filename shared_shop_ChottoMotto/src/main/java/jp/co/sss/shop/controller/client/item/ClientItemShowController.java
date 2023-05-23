@@ -1,4 +1,4 @@
-package jp.co.sss.shop.controller.client.item;
+	package jp.co.sss.shop.controller.client.item;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,5 +31,20 @@ public class ClientItemShowController {
 	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
 		return "index";
+	}
+	
+	@RequestMapping(path="/client/item/list/{sortType}")
+	public String list(Model model) {
+		return "list";
+	}
+	
+	@RequestMapping(path="/client/item/detail/{id}")
+	public String detail(Model model) {
+		return "detail";
+	}
+	
+	@RequestMapping(path="/client/item/list/{sortType}?category={id}")
+	public String category(Model model) {
+		return "category";
 	}
 }

@@ -32,10 +32,10 @@ public class ClientOrderRegistController {
 		User userInfo = userDao.findByIdAndDeleteFlag(user.getId(), 0);
 
 		// 取得したユーザ情報を注文入力フォーム情報に設定
-		orderForm.setId(userInfo);
+		orderForm.setId(userInfo.getId());
 
 		// 注文入力フォーム情報の支払方法に初期値としてクレジットカードを設定
-		orderForm.setPayMethod("クレジットカード");
+		orderForm.setPayMethod(0);
 
 		// 注文入力フォーム情報をセッションスコープに保存
 		session.setAttribute("orderForm", orderForm);
@@ -197,3 +197,5 @@ public class ClientOrderRegistController {
 	}
 
 }
+
+
