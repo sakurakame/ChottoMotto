@@ -1,11 +1,15 @@
 	package jp.co.sss.shop.controller.client.item;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.service.BeanTools;
 
@@ -35,16 +39,20 @@ public class ClientItemShowController {
 	
 	@RequestMapping(path="/client/item/list/{sortType}")
 	public String list(Model model) {
-		return "list";
+		List<Item> items = itemRepository.findAll();
+		model.addAttribute("items",items);
+		return "client/item/list";
 	}
 	
 	@RequestMapping(path="/client/item/detail/{id}")
-	public String detail(Model model) {
-		return "detail";
+	public String detail(@PathVariable int id, Model model) {
+		List<Item> itemsDetail = itemRepository.findByIdQuery(id);
+		model.addAttribute("items", itemsDetail);
+		return "client/item/detail";
 	}
 	
 	@RequestMapping(path="/client/item/list/{sortType}?category={id}")
 	public String category(Model model) {
-		return "category";
+		return "client/item/category";
 	}
 }

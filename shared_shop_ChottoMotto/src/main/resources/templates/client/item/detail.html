@@ -5,6 +5,24 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div>22</div>
+	<table class="item"> <!-- CHANGE LAYOUT!-->
+	<tr>
+		<th>商品画像</th>
+		<th>商品名</th>
+		<th>価格</th>
+		<th>カテゴリー</th>
+	</tr>
+	<tr th:each="item:${items}">
+		<td>
+		<img th:if="${image != null}" th:src="@{/images/${image}}" alt="Image" th:style="'width:300px; height: auto;'"/>
+		<img th:unless="${image != null}" th:src="@{/images/common/no_image.jpg}" alt="Image" th:style="'width:300px; height: auto;'"/>
+		</td>
+		<td th:text="${item.name}"></td>	
+		<td th:text="${item.price}"></td>
+		<td th:text="${item.category.name}"></td>
+	</tr>
+</table>	
+	<a th:href="@{/client/basket/list}">買い物かごに入れる</a>
+	<a th:href="@{/client/item/list/{sortType}}">戻る</a>
 </body>
 </html>

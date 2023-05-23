@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <title>注文確認</title>
 </head>
 <body>
-<div>25</div>
+  <!-- 共通部品: ヘッダ -->
+  <header>
+    <!-- 一般会員のヘッダの内容 -->
+  </header>
+
+  <!-- 共通部品: ナビゲーションバー -->
+  <nav>
+    <!-- 一般会員のナビゲーションバーの内容 -->
+  </nav>
+
+  <!-- 共通部品: サイドバー -->
+  <aside>
+    <!-- 非会員、一般会員のサイドバーの内容 -->
+  </aside>
+
+  <h2>ご注文の確認</h2>
+
+  <p>以下の内容でよろしければ、ご注文を確定してください。</p>
+
+  <!-- 注文商品一覧 -->
+  <table>
+    <thead>
+      <tr>
+        <th>商品名称</th>
+        <th>商品画像</th>
+        <th>単価</th>
+        <th>数量</th>
+        <th>小計</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 注文商品の情報を繰り返し表示 -->
+      <tr>
+        <td>{商品名称}</td>
+        <td><img src="{商品画像のURL}" alt="商品画像"></td>
+        <td>{単価}</td>
+        <td>{数量}</td>
+        <td>{小計}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4">合計</td>
+        <td>{合計}</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <h3>お届け先</h3>
+  <!-- 5-3-1-2で入力した内容を表示 -->
+
+  <h3>お支払方法</h3>
+  <!-- 5-3-2-2で入力した内容を表示 -->
+
+  <!-- ご注文の確定ボタン -->
+  <form method="post" action="/controller-path">
+    <input type="submit" value="ご注文の確定" />
+  </form>
+
+  <!-- 注文時点で注文対象商品の在庫がすべて0の場合のメッセージ -->
+  <p>ご注文を中止いたします。</p>
+
+  <!-- トップへ戻るリンク -->
+  <p><a href="2-1-1-2.html">トップへ戻る</a></p>
 </body>
 </html>
