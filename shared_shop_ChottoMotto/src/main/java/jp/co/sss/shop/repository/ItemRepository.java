@@ -1,7 +1,5 @@
 package jp.co.sss.shop.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -45,5 +43,5 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	public Item findByNameAndDeleteFlag(String name, int notDeleted);
 	
 	@Query("SELECT i FROM Item i WHERE i.id = :id")
-	public List<Item> findByIdQuery(@Param("id") Integer id);
+	public Item findByIdQuery(@Param("id") Integer id);
 }

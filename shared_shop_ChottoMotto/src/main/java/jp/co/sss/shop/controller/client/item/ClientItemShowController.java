@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.service.BeanTools;
@@ -46,8 +47,9 @@ public class ClientItemShowController {
 	
 	@RequestMapping(path="/client/item/detail/{id}")
 	public String detail(@PathVariable int id, Model model) {
-		List<Item> itemsDetail = itemRepository.findByIdQuery(id);
-		model.addAttribute("items", itemsDetail);
+		Item item = itemRepository.findByIdQuery(id);
+		ItemBean itemBean = beanTools.copyEntityToItemBean(item);
+		model.addAttribute("item", itemBean);
 		return "client/item/detail";
 	}
 	

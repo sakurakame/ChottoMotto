@@ -8,17 +8,19 @@
 <body>
 <div>商品一覧</div>
 
-<table class="item"> <!-- ADD STYLE!-->
+<table class="item">
 	<tr>
 		<th>商品画像</th>
 		<th>商品名</th>
 		<th>価格</th>
 		<th>カテゴリー</th>
 	</tr>
-	<tr th:each="item:${items}">
+	<tr th:each="item:${items}" >
 		<td>
-		<img th:if="${image != null}" th:src="@{/images/${image}}" alt="Image" th:style="'width:100px; height: auto;'"/>
-		<img th:unless="${image != null}" th:src="@{/images/common/no_image.jpg}" alt="Image" th:style="'width:100px; height: auto;'"/>
+		<img th:if="*{image != null}" 
+		th:src="@{/images/{image}(image=*{image})}" alt="Image" th:style="'width:100px; height: auto;'"></img>
+		<img th:if="*{image == null}" 
+		th:src="@{/images/common/no_image.jpg}" alt="Image" th:style="'width:100px; height: auto;'"/></img>
 		</td>
 		<td>
 		<a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a>

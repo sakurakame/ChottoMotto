@@ -1,28 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<title th:text="'商品詳細 | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
 </head>
-<body>
-	<table class="item"> <!-- CHANGE LAYOUT!-->
-	<tr>
-		<th>商品画像</th>
-		<th>商品名</th>
-		<th>価格</th>
-		<th>カテゴリー</th>
-	</tr>
-	<tr th:each="item:${items}">
-		<td>
-		<img th:if="${image != null}" th:src="@{/images/${image}}" alt="Image" th:style="'width:300px; height: auto;'"/>
-		<img th:unless="${image != null}" th:src="@{/images/common/no_image.jpg}" alt="Image" th:style="'width:300px; height: auto;'"/>
-		</td>
-		<td th:text="${item.name}"></td>	
-		<td th:text="${item.price}"></td>
-		<td th:text="${item.category.name}"></td>
-	</tr>
-</table>	
-	<a th:href="@{/client/basket/list}">買い物かごに入れる</a>
-	<a th:href="@{/client/item/list/{sortType}}">戻る</a>
+
+<body class="client item_detail_client" >
+	<h2 th:class="title" th:text="商品詳細"></h2>
+	
+	<div class="info_form_area" th:object="${item}">
+		<div class="item_detail_area">
+			<div class="item_image_area">
+				<span th:if="*{image != null}">
+					<img th:src="@{/images/{image}(image=*{image})}"></img>
+				</span>
+				<span th:if="*{image == null}">
+					<img th:src="@{/images/common/no_image.jpg}"></img>
+				</span>
+			</div>
+			<dl class="item_detail_list">
+				<dt>商品名</dt>
+				<dd th:text="*{name}"></dd>
+				<dt>価格</dt>
+				<dd th:text="*{price}"></dd>
+				<dt>在庫数</dt>	
+				<dd th:text="*{stock}"></dd>
+				<dt>カテゴリ</dt>
+				<dd th:text="*{categoryName}"></dd>
+				<dt>説明</dt>
+				<dd th:text="*{description}"></dd>
+			</dl>
+		</div>
+
+
+<form th:action="@{/client/basket/list}" method="post">
+  <button type="submit" class="link-button" th:if="*{stock != null}">買い物かごに入れる</button>
+</form>
+
+<form th:action="@{/client/item/list/{sortType}}" method="get">
+  <button type="submit" class="link-button">戻る</button>
+</form>
+
 </body>
 </html>
