@@ -1,10 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+	
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<title th:text="'会員変更入力 | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
 </head>
-<body>
-39
+
+<body th:object="${userForm}" class="client user_update_input_client">
+	<h2 th:class="title" th:text="会員変更入力"></h2>
+	<p th:class="input_message" th:text="#{msg.update.input}"></p>
+	<div class="user_info_form_area" th:object="${userForm}">
+		<form th:action="@{/client/user/update/check}" method="post" class="user_info_form">
+			<th:block th:if="${#fields.hasErrors()}">
+				<ul class="error_list">
+					<li th:each="err:${#fields.detailedErrors()}" th:text="${err.message}"></li>
+				</ul>
+				<br />
+			</th:block>
+			</th:block>
+			<ul class="input_list">
+				<li>
+					<label><span class="input_title">メールアドレス</span></label>
+					<input type="text" th:field="*{email}" />
+				</li>
+				<li>
+					<label><span class="input_title">パスワード</span></label>
+					<input type="password" th:field="*{password}" />
+				</li>
+				<li>
+					<label><span class="input_title">氏名</span></label>
+					<input type="text" th:field="*{name}" />
+				</li>
+				<li>
+					<label><span class="input_title">郵便番号</span></label>
+					<input type="text" th:field="*{postalCode}" />
+				</li>
+				<li>
+					<label><span class="input_title">住所</span></label>
+					<textarea rows="6" th:field="*{address}"></textarea>
+				</li>
+				<li>
+					<label><span class="input_title">電話番号</span></label>
+					<input type="text" th:field="*{phoneNumber}" />
+				</li>
+			</ul>
+			<button type="submit" name="id" th:value="*{id}" class="send_button" >確認</button>
+		</form>
+		<form th:action="@{/client/user/detail}" method="post">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
+	</div>
 </body>
+
 </html>
