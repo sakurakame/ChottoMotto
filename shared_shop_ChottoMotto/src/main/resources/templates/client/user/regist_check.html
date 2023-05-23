@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title th:text="'会員登録確認 | '+ #{shop.title}"></title>
 </head>
-<body>
-<div>34</div>
+
+<body class="client user_regist_check_admin">
+	<h2 th:class="title" th:text="会員登録確認"></h2>
+	<p th:class="check_message" th:text="#{msg.regist.check}"></p>
+	<div class="user_info_form_area" th:object="${userForm}">
+
+		<ul class="input_list">
+			<li>
+				<span class="input_title">メールアドレス</span>
+				<span class="input_value" th:text="*{email}"></span>
+			</li>
+			<li>
+				<span class="input_title">パスワード</span>
+				<span class="input_value">********</span>
+			</li>
+			<li>
+				<span class="input_title">氏名</span>
+				<span class="input_value" th:text="*{name}"></span>
+			</li>
+			<li>
+				<span class="input_title">郵便番号</span>
+				<span class="input_value" th:text="*{postalCode}"></span>
+			</li>
+			<li>
+				<span class="input_title">住所</span>
+				<span class="input_value" th:text="*{address}"></span>
+			</li>
+			<li>
+				<span class="input_title">電話番号</span>
+				<span class="input_value" th:text="*{phoneNumber}"></span>
+			</li>
+			
+		</ul>
+
+		<form th:action="@{/client/user/regist/complete}" method="post" class="user_info_form">
+			<input type="submit" value="登録" class="send_button" />
+		</form>
+		<form th:action="@{/client/user/regist/input}" method="post">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
+	</div>
 </body>
+
 </html>
