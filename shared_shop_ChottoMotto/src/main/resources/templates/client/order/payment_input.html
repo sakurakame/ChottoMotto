@@ -1,10 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <meta charset="UTF-8">
+  <title>お支払い方法選択</title>
 </head>
 <body>
-<div>29</div>
+  <!-- 共通部品: ヘッダ -->
+  <header>
+    <h1>一般会員のヘッダ</h1>
+    <!-- ヘッダのコンテンツ -->
+  </header>
+
+  <!-- 共通部品: ナビゲーションバー -->
+  <nav>
+    <!-- ナビゲーションバーのコンテンツ -->
+  </nav>
+
+  <!-- 共通部品: サイドバー -->
+  <aside>
+    <!-- サイドバーのコンテンツ -->
+  </aside>
+
+  <h2>お支払い方法を選択してください。</h2>
+
+  <form th:action="@{/client/order/check"}" method="post">
+    <label>
+      <input type="radio" name="paymentMethod" value="creditCard" checked>
+      クレジットカード
+    </label>
+    <br>
+    <label>
+      <input type="radio" name="paymentMethod" value="bankTransfer">
+      銀行振り込み
+    </label>
+    <br>
+    <label>
+      <input type="radio" name="paymentMethod" value="cashOnDelivery">
+      着払い
+    </label>
+    <br>
+    <label>
+      <input type="radio" name="paymentMethod" value="electronicMoney">
+      電子マネー
+    </label>
+    <br>
+    <label>
+      <input type="radio" name="paymentMethod" value="convenienceStorePayment">
+      コンビニ決済
+    </label>
+    <br>
+    <br>
+    <input type="submit" value="次へ">
+    <input type="button" value="戻る" onclick="location.href='5-3-1-2.html'">
+  </form>
 </body>
 </html>

@@ -34,7 +34,7 @@ public class ClientOrderRegistController {
 		orderForm.setId(userInfo.getId());
 
 		// 注文入力フォーム情報の支払方法に初期値としてクレジットカードを設定
-		orderForm.setPayMethod(0);
+		orderForm.setPayMethod(1);
 
 		// 注文入力フォーム情報をセッションスコープに保存
 		session.setAttribute("orderForm", orderForm);
@@ -43,27 +43,26 @@ public class ClientOrderRegistController {
 		return "redirect:/client/order/address/input";
 	}
 
-//	@RequestMapping(value = "/client/order/address/input", method = RequestMethod.GET)
-//	public String showAddressInputPage(Model model, HttpSession session) {
-//		// セッションスコープから注文入力フォーム情報を取得
-//		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
-//
-//		// 注文入力フォーム情報をリクエストスコープに設定
-//		model.addAttribute("orderForm", orderForm);
-//
-//		// セッションスコープに入力エラー情報がある場合、エラー情報を取得しリクエストスコープに設定し、セッションスコープから削除
-//		if (session.getAttribute("errorInfo") != null) {
-//			ErrorInfo errorInfo = (ErrorInfo) session.getAttribute("errorInfo");
-//			model.addAttribute("errorInfo", errorInfo);
-//			session.removeAttribute("errorInfo");
-//		}
-//
-//		// 登録画面表示処理にフォワード
-//		return "client/order/address_input";
-//	}
+	@RequestMapping(value = "/client/order/address/input", method = RequestMethod.GET)
+	public String showAddressInputPage(Model model, HttpSession session) {
+		// セッションスコープから注文入力フォーム情報を取得
+		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+
+		// 注文入力フォーム情報をリクエストスコープに設定
+		model.addAttribute("orderForm", orderForm);
+
+		// セッションスコープに入力エラー情報がある場合、エラー情報を取得しリクエストスコープに設定し、セッションスコープから削除
+		if (session.getAttribute("errorInfo") != null) {
+			model.addAttribute("errorInfo", session.getAttribute("errorInfo"));
+			session.removeAttribute("errorInfo");
+		}
+
+		// 登録画面表示処理にフォワード
+		return "client/order/address_input";
+	}
 
 	@RequestMapping(value = "/client/order/payment/input", method = RequestMethod.POST)
-	public String processPaymentInput(@ModelAttribute("orderForm") OrderForm orderForm, BindingResult bindingResult,
+	public String processPaymentInput(@ModelAttribute OrderForm orderForm, BindingResult bindingResult,
 			HttpSession session) {
 		// 画面から入力されたフォーム情報を注文入力フォーム情報として保存
 		session.setAttribute("orderForm", orderForm);
@@ -93,20 +92,20 @@ public class ClientOrderRegistController {
 		return "client/order/payment_input";
 	}
 
-//	@RequestMapping(value = "/client/order/check", method = RequestMethod.POST)
-//	public String processOrderCheck(@ModelAttribute("orderForm") OrderForm orderForm, HttpSession session) {
-//		// セッションスコープから注文入力フォーム情報を取得
-//		OrderForm storedOrderForm = (OrderForm) session.getAttribute("orderForm");
-//
-//		// 画面から入力された支払方法を取得した注文入力フォーム情報に設定
-//		storedOrderForm.setPaymentMethod(orderForm.getPaymentMethod());
-//
-//		// 注文入力フォーム情報をセッションスコープに保存
-//		session.setAttribute("orderForm", storedOrderForm);
-//
-//		// 注文確認画面表示処理にリダイレクト
-//		return "redirect:/client/order/check";
-//	}
+	@RequestMapping(value = "/client/order/check", method = RequestMethod.POST)
+	public String processOrderCheck(@ModelAttribute("orderForm") OrderForm orderForm, HttpSession session) {
+		// セッションスコープから注文入力フォーム情報を取得
+		OrderForm storedOrderForm = (OrderForm) session.getAttribute("orderForm");
+
+		// 画面から入力された支払方法を取得した注文入力フォーム情報に設定
+		storedOrderForm.setPayMethod(orderForm.getPayMethod());
+
+		// 注文入力フォーム情報をセッションスコープに保存
+		session.setAttribute("orderForm", storedOrderForm);
+
+		// 注文確認画面表示処理にリダイレクト
+		return "redirect:/client/order/check";
+	}
 //
 //	@RequestMapping(value = "/client/order/check", method = RequestMethod.GET)
 //	public String showOrderCheckPage(Model model, HttpSession session) {
