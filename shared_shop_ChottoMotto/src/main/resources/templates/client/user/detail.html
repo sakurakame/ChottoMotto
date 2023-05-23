@@ -7,7 +7,7 @@
 	<meta charset="UTF-8" />
 </head>
 
-<body class="client user_detail_user">
+<body class="client user_detail_client">
 	<h2 th:class="title" th:text="会員詳細"></h2>
 	<div class="info_form_area" th:object=${userBean}">
 		<div class="detail_area">
@@ -36,7 +36,7 @@
 		</div>	
 		
 		<div class="detail_button_area">
-			<form th:action="@{/client/user/list}" method="post">
+			<form th:action="@{/}" method="post">
 				<input type="submit" value="戻る" class="back_button" />
 			</form>
 			<form th:action="@{/client/user/update/input/{id}(id=*{id})}" method="post">
