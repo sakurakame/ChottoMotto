@@ -104,3 +104,7 @@ INSERT INTO order_items VALUES(seq_order_items.NEXTVAL, 4, 3, 1, 100);
 -- コミット
 COMMIT;
 
+
+-- レコード登録(会員) crud操作時に追加したり実験してください
+INSERT INTO users VALUES(seq_users.NEXTVAL, 'tsukiji@test.com', 'testtest', '一般築地', '1100016', '東京都台東区4-5-6 ABCマンション6階', '01234567890', 2, DEFAULT, DEFAULT);
+INSERT INTO users VALUES(seq_users.NEXTVAL, 'osame@test.com', 'testtest', '一般納', '1100016', '東京都台東区4-5-6 ABCマンション7階', '07012345678', 2, DEFAULT, DEFAULT);
