@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <title>注文情報入力</title>
 </head>
 <body>
+<<<<<<< HEAD
+  <h1>注文情報を入力してください。</h1>
+  
+  <!-- 入力項目フォーム -->
+  <form th:action="@{/client/order/payment/input}" method="POST" th:object="${orderForm}">
+    <label for="postalCode">郵便番号：</label>
+    <input type="text" id="postalCode" name="postalCode" th:value="${orderForm.postalCode}">
+    <span th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></span>
+    <br>
+    
+    <label for="address">住所：</label>
+    <textarea id="address" name="address" th:text="${orderForm.address}"></textarea>
+    <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+    <br>
+    <label for="name">氏名：</label>
+    <input type="text" id="name" name="name" th:value="${orderForm.name}">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <br>
+    
+    <label for="phoneNumber">電話番号：</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" th:value="${orderForm.phoneNumber}">
+    <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+    <br>
+    
+    <!-- エラーメッセージ表示 -->
+    <p th:if="${#fields.hasErrors()}">入力値にエラーがあります。</p>
+    
+    <input type="submit" value="次へ">
+    <input type="submit" value="戻る" onclick="location.href='5-3-1-2.html'">
+  </form>
+=======
 <div>24</div>
+
+<div>実験</div>
+>>>>>>> e7e6f3118e37d8a68beb6371f24687eeab457d8a
 </body>
 </html>
