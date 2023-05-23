@@ -1,6 +1,7 @@
 package jp.co.sss.shop.controller.client.order;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,8 +62,8 @@ public class ClientOrderRegistController {
 		return "client/order/address_input";
 	}
 
-	@RequestMapping(value = "/client/order/payment/input", method = RequestMethod.POST)
-	public String processPaymentInput(@ModelAttribute OrderForm orderForm, BindingResult bindingResult,
+	@RequestMapping(path = "/client/order/payment/input", method = RequestMethod.POST)
+	public String processPaymentInput(@Valid @ModelAttribute OrderForm orderForm, BindingResult bindingResult,
 			HttpSession session) {
 		// 画面から入力されたフォーム情報を注文入力フォーム情報として保存
 		session.setAttribute("orderForm", orderForm);
