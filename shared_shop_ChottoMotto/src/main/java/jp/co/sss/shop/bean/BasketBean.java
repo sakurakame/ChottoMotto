@@ -79,4 +79,5 @@ public class BasketBean {
 	public void setOrderNum(Integer orderNum) {
 		this.orderNum = orderNum;
 	}
+
 }

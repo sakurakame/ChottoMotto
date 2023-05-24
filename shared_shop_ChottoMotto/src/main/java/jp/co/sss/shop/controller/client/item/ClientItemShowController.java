@@ -53,8 +53,36 @@ public class ClientItemShowController {
 		return "client/item/detail";
 	}
 	
-	@RequestMapping(path="/client/item/list/{sortType}?category={id}")
-	public String category(Model model) {
-		return "client/item/category";
+	@RequestMapping(path="/index", method=RequestMethod.POST)
+	public String showTopPageItems(Model model) {
+		List<Item> item;
+		int sortType = 1;
+		
+		if (sortType == 1) {
+			item = itemRepository.findAllItemsDESC();
+		} else {
+			item = itemRepository.findAllItems();
+		}
+		model.addAttribute("items", item);
+		model.addAttribute("sortType", sortType);
+		
+		return "index";
+	} 
+
+	@RequestMapping(path="/client/item/list/{sortType}?category={id}", method=RequestMethod.GET)
+	public String category(@PathVariable Integer id, Model model) {
+		List<Item> items = null;
+		if (id == 1) {
+			items = itemRepository.findCategoryFood();
+			model.addAttribute("items", items);
+		} else if (id == 2) {
+			items = itemRepository.findCategoryNotFood();
+			model.addAttribute("items", items);
+		} else {
+			items = itemRepository.findAll();
+			model.addAttribute("items", items);
+		}
+		return "redirect:/client/item/list";
+		
 	}
 }

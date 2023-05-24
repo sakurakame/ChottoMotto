@@ -5,6 +5,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div>20</div>
+<table class="item">
+	<tr>
+		<th>商品名</th>
+	</tr>
+	<tr th:each="item:${newBasket}" >
+		<td th:text="${item.name}"></td>	
+	</tr>
+</table>
 </body>
 </html>
