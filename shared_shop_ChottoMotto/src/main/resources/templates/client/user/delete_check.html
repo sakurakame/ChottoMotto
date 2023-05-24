@@ -9,7 +9,7 @@
 
 <body class=" user_delete_check_client">
 	<h2 th:class="title" th:text="会員退会確認"></h2>
-	<p th:class="check_message" th:text="#{msg.delete.check}"></p>
+	<p th:class="check_message" th:text="#{msg.client.delete.check}"></p>
 	<div class="user_info_form_area" th:object=${userForm}>
 		<ul class="input_list" >
 			<li>
@@ -36,7 +36,7 @@
 		<form th:action="@{/client/user/delete/complete}" method="post" class="user_info_form">
 			<input type="submit" value="退会" class="send_button delete" />
 		</form>
-		<form th:action="@{/client/user/list}" method="post" class="user_info_form">
+		<form th:action="@{/client/user/detail}" method="post" class="user_info_form">
 			<input type="submit" value="戻る" class="back_button" />
 		</form>
 	</div>
