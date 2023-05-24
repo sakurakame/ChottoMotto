@@ -16,6 +16,7 @@ import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.UserForm;
 import jp.co.sss.shop.repository.UserDao;
+import jp.co.sss.shop.util.Constant;
 
 @Controller
 public class ClientUserRegistController {
@@ -151,6 +152,8 @@ public class ClientUserRegistController {
 			return "redirect:/syserror";
 		}
 
+		
+		userForm.setAuthority(Constant.AUTH_CLIENT);
 		// 入力フォーム情報をDB登録
 		User user = new User();
 		BeanUtils.copyProperties(userForm, user);
