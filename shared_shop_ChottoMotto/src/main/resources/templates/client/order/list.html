@@ -9,6 +9,19 @@
 
 <body class="admin order_list_admin">
 	<h2 th:class="title" th:text="注文一覧"></h2>
+	<br>
+	<form action="@{/client/order/address/input}" method="post">
+	<input type="submit" value="みねがみへpost" />
+	</form>
+	
+	<br>
+	<form action="@{/client/order/address/input}" method="get">
+	<input type="submit" value="みねがみへget" />
+	</form>
+
+	
+	</form>
+	<input type = "submit" value = "峯上へ" 
 	<!--/* 登録なしメッセージ */-->
 	<div th:if="${#lists.isEmpty(orders)}">
 		<p th:text="#{msg.admin.list.none(注文)}"></p>
