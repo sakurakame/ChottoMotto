@@ -34,6 +34,11 @@ public class ClientOrderShowController {
 	@Autowired
 	BeanTools beanTools;
 
+	
+
+	/**
+
+	
 	/**
 	 * 一覧取得、一覧画面表示　処理
 	 *
@@ -95,4 +100,7 @@ public class ClientOrderShowController {
 
 		return "client/order/detail";
 	}
+	
+	
+	
 }
