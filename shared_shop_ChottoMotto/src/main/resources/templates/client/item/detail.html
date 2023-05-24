@@ -35,11 +35,11 @@
 		</div>
 
 
-<form th:action="@{/client/basket/list}" method="post">
+<form th:action="@{/client/basket/add}" method="post">
   <button type="submit" class="link-button" th:if="*{stock != null}">買い物かごに入れる</button>
 </form>
 
-<form th:action="@{/client/item/list/{sortType}}" method="get">
+<form th:action="@{/client/item/list/{sortType}}" method="post">
   <button type="submit" class="link-button">戻る</button>
 </form>
 

@@ -1,5 +1,7 @@
 package jp.co.sss.shop.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -44,4 +46,20 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	
 	@Query("SELECT i FROM Item i WHERE i.id = :id")
 	public Item findByIdQuery(@Param("id") Integer id);
+	
+	
+	@Query("SELECT i FROM Item i")
+	public List<Item> findAllItems();
+	
+	@Query("SELECT i FROM Item i ORDER BY i.id DESC")
+	public List<Item> findAllItemsDESC();
+	
+	@Query("SELECT i FROM Item i WHERE categoryId=1")
+	public List<Item> findCategoryFood();
+	
+	@Query("SELECT i FROM Item i WHERE categoryId=2")
+	public List<Item> findCategoryNotFood();
+	
+	@Query("SELECT i FROM Item i")
+	public Item findAllItemCategories();
 }
