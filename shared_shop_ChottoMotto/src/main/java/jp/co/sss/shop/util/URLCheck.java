@@ -109,6 +109,7 @@ public class URLCheck {
 
 		boolean isCheckURLOK = false;
 		if (!URLCheck.isURLForStaticFile(requestURL)
+				&& !requestURL.endsWith("/jma")
 				&& !requestURL.endsWith("/login")
 				&& !requestURL.endsWith(contextPath + "/")
 				&& requestURL.indexOf("/client/item/list/") == -1
