@@ -80,7 +80,7 @@ public class ClientOrderShowController {
 	 * @param model Viewとの値受渡し
 	 * @return "admin/order/detail" 詳細画面　表示
 	 */
-	@RequestMapping(path = "/client/order/detail/{id}")
+	@RequestMapping(path = "client/order/detail/{id}")
 	public String showOrder(@PathVariable int id, Model model) {
 		// 選択された注文情報に該当する情報を取得
 		Order order = orderRepository.getReferenceById(id);
