@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jp.co.sss.shop.bean.OrderBean;
 import jp.co.sss.shop.bean.OrderItemBean;
+import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.Order;
 import jp.co.sss.shop.entity.OrderItem;
+import jp.co.sss.shop.form.UserForm;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.service.BeanTools;
 import jp.co.sss.shop.util.PriceCalc;
@@ -48,7 +50,9 @@ public class ClientOrderShowController {
 	@RequestMapping(path = "/client/order/list", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showOrderList(Model model, Pageable pageable) {
 		// すべての注文情報を取得(注文日降順)
-		Page<Order> orderList = orderRepository.findAllOrderByInsertdateDescIdDesc(pageable);
+		UserForm userForm = new UserForm();
+		userForm.setName(((UserBean) session.getAttribute("user")).getName());
+		Page<Order> orderList = orderRepository.findAllOrderByInsertdateDescNameDesc(userForm.getName(),pageable);
 
 		// 注文情報リストを生成
 		List<OrderBean> orderBeanList = new ArrayList<OrderBean>();
