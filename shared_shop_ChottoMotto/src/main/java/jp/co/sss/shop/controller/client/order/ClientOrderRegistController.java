@@ -25,7 +25,7 @@ public class ClientOrderRegistController {
 	@Autowired
 	HttpSession session;
 
-	@RequestMapping(path = "/client/order/address/inpt", method = RequestMethod.GET)
+	@RequestMapping(path = "/client/order/address/input", method = RequestMethod.POST)
 	public String handleOrderAddressInput(Model model) {
 		
 		

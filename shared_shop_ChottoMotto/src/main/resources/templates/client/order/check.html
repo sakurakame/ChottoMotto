@@ -80,6 +80,16 @@
 					</tr>
 				</thead>
 			
+				<th>支払い方法</th>
+				<td th:switch="*{payMethod}">
+					<span th:case="1">クレジットカード</span>
+					<span th:case="2">銀行振込</span>
+					<span th:case="3">着払い</span>
+					<span th:case="4">電子マネー</span>
+					<span th:case="5">コンビニ決済</span>
+				</td>
+			
+			
 			<tr th:each="order: ${orderForm}">
 						<td th:text="${order.payMethod}"></td>
 					</tr>
@@ -92,6 +102,11 @@
 
 			<!-- 注文時点で注文対象商品の在庫がすべて0の場合のメッセージ -->
 			<p>ご注文を中止いたします。</p>
+			
+			<form th:action="@{/client/order/payment/back}" method="post">
+			<input type="submit" value="戻る" class="back_button" />
+			</form>
+
 
 			<!-- トップへ戻るリンク -->
 			<p><a th:href="@{/}">トップへ戻る</a></p>

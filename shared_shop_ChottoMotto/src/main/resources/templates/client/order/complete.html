@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title th:text="'注文完了 | '+ #{shop.title}"></title>
 </head>
-<body>
-<div>26</div>
+<body class="client user_regist_complete_admin">
+	<h2 th:class="title" th:text="注文完了"></h2>
+	<p class="complete_message" th:text="|#{msg.order.complete1}<br>#{msg.order.complete2}|"></p>
+	<p class="complete_link"><a th:href="@{/}" th:text="トップへ戻る"></a></p>
 </body>
+
+
 </html>
