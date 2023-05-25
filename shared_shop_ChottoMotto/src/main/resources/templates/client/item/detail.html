@@ -26,7 +26,11 @@
 				<dt>価格</dt>
 				<dd th:text="*{price}"></dd>
 				<dt>在庫数</dt>	
-				<dd th:text="*{stock}"></dd>
+				<dd>
+						<span th:if="*{stock > 5}">在庫あり</span>
+    					<span th:if="*{stock <= 5 && stock > 0}" th:text="*{stock}"></span>
+    					<span th:if="*{stock == 0}">在庫なし</span>
+				</dd>
 				<dt>カテゴリ</dt>
 				<dd th:text="*{categoryName}"></dd>
 				<dt>説明</dt>
@@ -40,7 +44,7 @@
 </form>
 
 <form th:action="@{/client/item/list/{sortType}}" method="post">
-  <button type="submit" class="link-button">戻る</button>
+  <button type="submit" class="back_button">戻る</button>
 </form>
 
 </body>
