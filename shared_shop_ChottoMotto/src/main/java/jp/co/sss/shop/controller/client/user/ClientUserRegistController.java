@@ -20,20 +20,20 @@ import jp.co.sss.shop.util.Constant;
 
 @Controller
 public class ClientUserRegistController {
-	
+
 	@Autowired
 	UserDao userRepository;
-	
+
 	@Autowired
 	HttpSession session;
-	
-	@RequestMapping(path ="/client/user/regist/input/init",method = RequestMethod.GET)
+
+	@RequestMapping(path = "/client/user/regist/input/init", method = RequestMethod.GET)
 	public String clientRegistInput() {
 		UserForm userForm = new UserForm();
-		session.setAttribute("userForm",userForm);
+		session.setAttribute("userForm", userForm);
 		return "redirect:/client/user/regist/input";
 	}
-	
+
 	/**
 	 * 入力画面　表示処理(POST) 一覧画面での新規ボタン押下後の処理
 	 * 
@@ -54,7 +54,7 @@ public class ClientUserRegistController {
 		//登録入力画面へリダイレクト
 		return "redirect:/client/user/regist/input";
 	}
-	
+
 	/**
 	 * 入力画面　表示処理(GET)
 	 * 
@@ -83,7 +83,7 @@ public class ClientUserRegistController {
 		// 入力画面
 		return "client/user/regist_input";
 	}
-	
+
 	/**
 	 * 登録入力確認　処理
 	 *
@@ -117,7 +117,7 @@ public class ClientUserRegistController {
 		// 登録確認画面へリダイレクト
 		return "redirect:/client/user/regist/check";
 	}
-	
+
 	/**
 	 * 確認画面　表示処理
 	 *
@@ -137,7 +137,7 @@ public class ClientUserRegistController {
 		//登録確認画面
 		return "client/user/regist_check";
 	}
-	
+
 	/**
 	 * 情報登録処理
 	 *
@@ -152,7 +152,6 @@ public class ClientUserRegistController {
 			return "redirect:/syserror";
 		}
 
-		
 		userForm.setAuthority(Constant.AUTH_CLIENT);
 		// 入力フォーム情報をDB登録
 		User user = new User();
@@ -165,7 +164,7 @@ public class ClientUserRegistController {
 		//登録完了画面へリダイレクト
 		return "redirect:/client/user/regist/complete";
 	}
-	
+
 	/**
 	 * 登録完了画面　表示処理
 	 *
@@ -176,7 +175,3 @@ public class ClientUserRegistController {
 		return "client/user/regist_complete";
 	}
 }
-
-
-
-
