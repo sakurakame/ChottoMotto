@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
-	
+
 <head>
 	<title th:text="'会員変更入力 | '+ #{shop.title}"> </title>
 	<meta charset="UTF-8" />
@@ -45,7 +45,7 @@
 					<input type="text" th:field="*{phoneNumber}" />
 				</li>
 			</ul>
-			<button type="submit" name="id" th:value="*{id}" class="send_button" >確認</button>
+			<button type="submit" name="id" th:value="*{id}" class="send_button">確認</button>
 		</form>
 		<form th:action="@{/client/user/detail}" method="post">
 			<input type="submit" value="戻る" class="back_button" />

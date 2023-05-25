@@ -21,33 +21,30 @@ import jp.co.sss.shop.util.Constant;
 
 @Controller
 public class ClientUserShowController {
-	
+
 	@Autowired
-	UserDao userRepository;	
-	
+	UserDao userRepository;
+
 	@Autowired
 	HttpSession session;
-	
-	
-	
+
 	@RequestMapping(path = "/client/user/detail", method = { RequestMethod.GET, RequestMethod.POST })
-	public String showUser( Model model) {
+	public String showUser(Model model) {
 		Integer id = ((UserBean) session.getAttribute("user")).getId();
-		User user = userRepository.findByIdAndDeleteFlag(id , Constant.NOT_DELETED);
+		User user = userRepository.findByIdAndDeleteFlag(id, Constant.NOT_DELETED);
 		if (user == null) {
 			//表示対象がない場合、システムエラー
 			return "redirect:/syserror";
 		}
-		
+
 		// Userエンティティの各フィールドの値を表示
 		UserBean userBean = new UserBean();
 		BeanUtils.copyProperties(user, userBean);
 		model.addAttribute("userBean", userBean);
-		
+
 		//セッションの会員登録・変更・削除用情報あれば消す
 		session.removeAttribute("userForm");
-		
-		System.out.println("あいうえお");
+
 		// 詳細画面
 		return "client/user/detail";
 	}

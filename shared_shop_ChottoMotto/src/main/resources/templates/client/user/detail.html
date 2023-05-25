@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
-	
+
 <head>
 	<title th:text="'会員詳細 | '+ #{shop.title}"> </title>
 	<meta charset="UTF-8" />
@@ -33,8 +33,8 @@
 					<span class="input_value" th:text="*{phoneNumber}"></span>
 				</li>
 			</ul>
-		</div>	
-		
+		</div>
+
 		<div class="detail_button_area">
 			<form th:action="@{/}" method="post">
 				<input type="submit" value="戻る" class="back_button" />
@@ -44,9 +44,9 @@
 			</form>
 			<form th:action="@{/client/user/delete/check/{id}(id=*{id})}" method="post">
 				<input type="submit" value="退会" class="delete" />
-			
+
 			</form>
-		</div>	
+		</div>
 
 </body>
 
