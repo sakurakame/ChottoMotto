@@ -104,4 +104,5 @@ public class OrderBean {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 }

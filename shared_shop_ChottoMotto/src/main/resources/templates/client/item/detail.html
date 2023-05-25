@@ -35,7 +35,7 @@
 		</div>
 
 
-<form th:action="@{/client/basket/add}" method="post">
+<form th:action="@{/client/basket/add/{itemId}(itemId=${item.id})}" method="get">
   <button type="submit" class="link-button" th:if="*{stock != null}">買い物かごに入れる</button>
 </form>
 

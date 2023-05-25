@@ -53,11 +53,11 @@ public class ClientItemShowController {
 		return "client/item/detail";
 	}
 	
-	@RequestMapping(path="/index", method=RequestMethod.POST)
+	@RequestMapping(path="/index", method=RequestMethod.GET)
 	public String showTopPageItems(Model model) {
 		List<Item> item;
 		int sortType = 1;
-		
+		model.addAttribute("sortType", 1);
 		if (sortType == 1) {
 			item = itemRepository.findAllItemsDESC();
 		} else {
@@ -82,7 +82,7 @@ public class ClientItemShowController {
 			items = itemRepository.findAll();
 			model.addAttribute("items", items);
 		}
-		return "redirect:/client/item/list";
+		return "client/item/list";
 		
 	}
 }
