@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.repository.ItemRepository;
+import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.service.BeanTools;
 
 /**
@@ -23,6 +25,9 @@ public class ClientItemShowController {
 	/** 商品情報 */
 	@Autowired
 	ItemRepository itemRepository;
+	
+	@Autowired
+	OrderItemRepository orderItemRepository;
 
 	@Autowired
 	BeanTools beanTools;
@@ -53,18 +58,23 @@ public class ClientItemShowController {
 		return "client/item/detail";
 	}
 	
-	@RequestMapping(path="/index", method=RequestMethod.GET)
+	@RequestMapping(path="/", method=RequestMethod.GET)
 	public String showTopPageItems(Model model) {
 		List<Item> item;
+		item = itemRepository.findAll();
+		List<OrderItem> order;
+		order = orderItemRepository.findAll();
+		
 		int sortType = 1;
 		model.addAttribute("sortType", 1);
 		if (sortType == 1) {
 			item = itemRepository.findAllItemsDESC();
 		} else {
-			item = itemRepository.findAllItems();
+			order = orderItemRepository.findAllByOrderByQuantityDesc();
 		}
 		model.addAttribute("items", item);
 		model.addAttribute("sortType", sortType);
+		model.addAttribute("orderitems", order);
 		
 		return "index";
 	} 

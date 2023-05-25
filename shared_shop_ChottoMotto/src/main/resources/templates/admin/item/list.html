@@ -9,6 +9,7 @@
 
 <body class="admin item_list_admin">
 	<h2 th:class="title" th:text="商品一覧"></h2>
+		
 	<form th:action="@{/admin/item/regist/input}" method="post" class="sign_up_form">
 		<input type="submit" value="商品新規登録" class="menu_button" th:if="${registrable}" />
 	</form>

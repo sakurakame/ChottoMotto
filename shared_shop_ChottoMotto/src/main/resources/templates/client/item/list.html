@@ -7,7 +7,11 @@
 </head>
 <body>
 <div>商品一覧</div>
-
+	<div>
+	<a th:href="@{/client/item/list/1}" th:text="新着商品"></a>
+	<a th:href="@{/client/item/list/2}" th:text="売れ筋順"></a>
+	</div>
+	
 <table class="item">
 	<tr>
 		<th>商品画像</th>
