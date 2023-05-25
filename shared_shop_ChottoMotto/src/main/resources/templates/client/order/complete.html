@@ -6,9 +6,9 @@
 	<meta charset="UTF-8">
 	<title th:text="'注文完了 | '+ #{shop.title}"></title>
 </head>
-<body class="client user_regist_complete_admin">
+<body class="client">
 	<h2 th:class="title" th:text="注文完了"></h2>
-	<p class="complete_message" th:text="|#{msg.order.complete1}<br>#{msg.order.complete2}|"></p>
+	<p class="complete_message" th:text="|#{msg.order.complete1}#{msg.order.complete2}|"></p>
 	<p class="complete_link"><a th:href="@{/}" th:text="トップへ戻る"></a></p>
 </body>
 
