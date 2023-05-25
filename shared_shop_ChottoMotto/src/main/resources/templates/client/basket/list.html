@@ -9,7 +9,8 @@
         <h2 class="title">買い物かご</h2>
 
         <div class="list">
-            <table class="list_table basket">
+        	<p th:if="${#lists.isEmpty(myBaskets)}"　th:text="#{msg.basket.list.none}"></p>
+            <table class="list_table basket" th:if="${!#lists.isEmpty(myBaskets)}">
                 <tr>
                     <th>商品名</th>
                     <th>数</th>
@@ -18,11 +19,11 @@
                 </tr>
                 <tr th:each="basket : ${myBaskets}">
                     <td th:text="${basket.name}"></td>
-                    <td>---</td>
+                    <td th:text="${basket.orderNum}"></td>
                     <td>
                         <form th:action="@{/client/basket/delete}" method="post">
                             <input type="hidden" name="id" th:value="${basket.id}" />
-                            <input type="submit" value="削除" class="send_button order" />
+                            <input type="submit" value="削除" class="delete" />
                         </form>
                     </td>
                     <td th:text="${basket.stock}"></td>
@@ -30,12 +31,12 @@
             </table>
         </div>
 
-        <div align="center">
+        <div align="center" th:if="${!#lists.isEmpty(myBaskets)}">
             <form th:action="@{/client/order/address/input}" method="post">
                 <input type="submit" value="ご注文のお手続き" class="send_button order" />
             </form>
             <form th:action="@{/client/basket/allDelete}" method="post">
-                <input type="submit" value="買い物かごを空にする" class="back_button" />
+                <input type="submit" value="買い物かごを空にする" class="delete" />
             </form>
         </div>
     </div>
