@@ -161,8 +161,18 @@ public class ClientUserRegistController {
 		// 使い終わったセッション情報削除
 		session.removeAttribute("userForm");
 
+		UserBean userBean = new UserBean();
+
+		userBean.setId(user.getId());
+		userBean.setName(user.getName());
+		userBean.setAuthority(user.getAuthority());
+
+		// セッションスコープにログインしたユーザの情報を登録
+		session.setAttribute("user", userBean);
+
 		//登録完了画面へリダイレクト
 		return "redirect:/client/user/regist/complete";
+
 	}
 
 	/**
