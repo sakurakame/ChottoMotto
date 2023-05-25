@@ -41,7 +41,6 @@ public class ClientOrderShowController {
 	
 	/**
 	 * 一覧取得、一覧画面表示　処理
-	 *
 	 * @param model Viewとの値受渡し
 	 * @param pageable ページング情報
 	 * @return "admin/order/list" 注文情報 一覧画面へ
