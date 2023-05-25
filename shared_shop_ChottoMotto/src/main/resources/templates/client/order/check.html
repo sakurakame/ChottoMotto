@@ -1,73 +1,100 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
 <head>
-  <title>注文確認</title>
+	<meta charset="UTF-8">
+	<title th:text="'注文確認 | '+ #{shop.title}"></title>
+
 </head>
+
 <body>
-  <!-- 共通部品: ヘッダ -->
-  <header>
-    <!-- 一般会員のヘッダの内容 -->
-  </header>
 
-  <!-- 共通部品: ナビゲーションバー -->
-  <nav>
-    <!-- 一般会員のナビゲーションバーの内容 -->
-  </nav>
+	<body class="client user_regist_input_admin">
 
-  <!-- 共通部品: サイドバー -->
-  <aside>
-    <!-- 非会員、一般会員のサイドバーの内容 -->
-  </aside>
+		<h2 th:class="title" th:text="注文確認"></h2>
+		<p th:class="input_message" th:text="#{msg.order.address.input}"></p>
 
-  <h2>ご注文の確認</h2>
+		<div class="user_info_form_area">
 
-  <p>以下の内容でよろしければ、ご注文を確定してください。</p>
+			<h2>ご注文の確認</h2>
 
-  <!-- 注文商品一覧 -->
-  <table>
-    <thead>
-      <tr>
-        <th>商品名称</th>
-        <th>商品画像</th>
-        <th>単価</th>
-        <th>数量</th>
-        <th>小計</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- 注文商品の情報を繰り返し表示 -->
-      <tr>
-        <td>{商品名称}</td>
-        <td><img src="{商品画像のURL}" alt="商品画像"></td>
-        <td>{単価}</td>
-        <td>{数量}</td>
-        <td>{小計}</td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="4">合計</td>
-        <td>{合計}</td>
-      </tr>
-    </tfoot>
-  </table>
+			<p>以下の内容でよろしければ、ご注文を確定してください。</p>
 
-  <h3>お届け先</h3>
-  <!-- 5-3-1-2で入力した内容を表示 -->
 
-  <h3>お支払方法</h3>
-  <!-- 5-3-2-2で入力した内容を表示 -->
+			<!-- 注文商品一覧 -->
+			<table class="list_table item_list">
+				<thead>
+					<tr>
+						<th>商品名称</th>
+						<th>商品画像</th>
+						<th>単価</th>
+						<th>数量</th>
+						<th>小計</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 注文商品の情報を繰り返し表示 -->
+					<tr th:each="item: ${items}">
+						<td th:text="${item.name}"></td>
+						<td><img src="{商品画像のURL}" alt="商品画像"></td>
+						<td th:text="${item.price}"></td>
+						<td>{数量}</td>
+						<td>{小計}</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4">合計</td>
+						<td>{合計}</td>
+					</tr>
+				</tfoot>
+			</table>
 
-  <!-- ご注文の確定ボタン -->
-  <form method="post" action="/controller-path">
-    <input type="submit" value="ご注文の確定" />
-  </form>
 
-  <!-- 注文時点で注文対象商品の在庫がすべて0の場合のメッセージ -->
-  <p>ご注文を中止いたします。</p>
+			<h3>お届け先</h3>
+			<table>
+			<thead>
+					<tr>
+						<th>郵便番号</th>
+						<th>住所</th>
+						<th>氏名</th>
+						<th>電話</th>
+					</tr>
+				</thead>
+			<tr th:each="order: ${orderForm}">
+						<td th:text="${order. postalCode}"></td>
+						<td th:text="${order.address}"></td>
+						<td th:text="${order.name}"></td>
+						<td th:text="${order.phoneNumber}"></td>
+					</tr>
+			</table>
+			
+			
+			<h3>お支払方法</h3>
+			<table>
+			
+			<thead>
+					<tr>
+						<th>お支払い方法</th>
+					</tr>
+				</thead>
+			
+			<tr th:each="order: ${orderForm}">
+						<td th:text="${order.payMethod}"></td>
+					</tr>
+			</table>
 
-  <!-- トップへ戻るリンク -->
-  <p><a href="2-1-1-2.html">トップへ戻る</a></p>
-</body>
+			<!-- ご注文の確定ボタン -->
+			<form method="post" action="/controller-path">
+				<input type="submit" value="ご注文の確定" />
+			</form>
+
+			<!-- 注文時点で注文対象商品の在庫がすべて0の場合のメッセージ -->
+			<p>ご注文を中止いたします。</p>
+
+			<!-- トップへ戻るリンク -->
+			<p><a th:href="@{/}">トップへ戻る</a></p>
+	</body>
+
 </html>

@@ -4,45 +4,56 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title th:text="|お支払い方法選択|"></title>
+	<title th:text="'お支払い方法選択 | '+ #{shop.title}"></title>
 </head>
 
-<body>
+<body class="client user_regist_input_admin">
 
-	<h2>お支払い方法を選択してください。</h2>
+	<h2 th:class="title" th:text="お支払い方法を選択してください"></h2>
+	<p th:class="input_message" th:text="#{msg.order.address.input}"></p>
+	<div class="user_info_form_area">
 
-	<form th:action="@{/client/order/check}" method="post">
-		<label>
-			<input type="radio" name="paymentMethod" value="creditCard" checked>
-			クレジットカード
-		</label>
-		<br>
+		<form th:action="@{/client/order/check}" method="post" class="user_info_form" th:object="${orderForm}">
+			<th:block th:if="${#fields.hasErrors()}">
+				<ul class="error_list">
+					<li th:each="err:${#fields.detailedErrors()}" th:text="${err.message}"></li>
+				</ul>
+				<br />
+			</th:block>
 
-		<label>
-			<input type="radio" name="paymentMethod" value="bankTransfer">
-			銀行振り込み
-		</label>
-		<br>
-		<label>
-			<input type="radio" name="paymentMethod" value="cashOnDelivery">
-			着払い
-		</label>
-		<br>
-		<label>
-			<input type="radio" name="paymentMethod" value="electronicMoney">
-			電子マネー
-		</label>
-		<br>
-		<label>
-			<input type="radio" name="paymentMethod" value="convenienceStorePayment">
-			コンビニ決済
-		</label>
-		<br>
-		<br>
-		<input type="submit" value="次へ">
-		<input type="submit" value="戻る" method="get" th:href="@{/client/order/address/input}">
+			<label>
+				<input type="radio" name="paymentMethod" th:field="*{payMethod}" value="1" checked>
+				クレジットカード
+			</label>
+			<br>
 
-	</form>
+			<label>
+				<input type="radio" name="paymentMethod" th:field="*{payMethod}" value="2">
+				銀行振り込み
+			</label>
+			<br>
+			<label>
+				<input type="radio" name="paymentMethod" th:field="*{payMethod}" value="3">
+				着払い
+			</label>
+			<br>
+			<label>
+				<input type="radio" name="paymentMethod" th:field="*{payMethod}" value="4">
+				電子マネー
+			</label>
+			<br>
+			<label>
+				<input type="radio" name="paymentMethod" th:field="*{payMethod}" value="5">
+				コンビニ決済
+			</label>
+			<br>
+			<br>
+			<input type="submit" value="次へ">
+
+		</form>
+		<form th:action="@{/client/order/address/input}" method="get">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
 </body>
 
 </html>

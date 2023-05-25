@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import jp.co.sss.shop.bean.UserBean;
+import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.form.OrderForm;
 import jp.co.sss.shop.repository.UserDao;
+import jp.co.sss.shop.util.Constant;
 
 @Controller
 public class ClientOrderRegistController {
@@ -27,8 +29,6 @@ public class ClientOrderRegistController {
 	public String handleOrderAddressInput(Model model) {
 		
 		
-		System.out.println("こんにちわ");
-		
 		// orderFormオブジェクトを作成
 		OrderForm orderForm = new OrderForm();
 
@@ -36,7 +36,7 @@ public class ClientOrderRegistController {
 		orderForm.setId(((UserBean) session.getAttribute("user")).getId());
 
 		// 注文入力フォーム情報の支払方法に初期値とsしてクレジットカードを設定
-		orderForm.setPayMethod(1);
+		orderForm.setPayMethod(Constant.DEFAULT_PAYMENT_METHOD);
 		
 		// 注文入力フォーム情報をセッションスコープに保存
 		session.setAttribute("orderForm", orderForm);
@@ -49,8 +49,7 @@ public class ClientOrderRegistController {
 	public String showAddressInputPage(Model model) {
 		// セッションスコープから注文入力フォーム情報を取得
 		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
-		
-		System.err.println("こんばんは");
+
 		BindingResult result = (BindingResult) session.getAttribute("result");
 		if (result != null) {
 			//セッションにエラー情報がある場合、エラー情報をスコープに設定
@@ -67,8 +66,7 @@ public class ClientOrderRegistController {
 	}
 
 	@RequestMapping(path = "/client/order/payment/input", method = RequestMethod.POST)
-	public String processPaymentInput(@Valid @ModelAttribute OrderForm orderForm, BindingResult bindingResult,
-			HttpSession session) {
+	public String processPaymentInput(@Valid @ModelAttribute OrderForm orderForm, BindingResult bindingResult) {
 		// 画面から入力されたフォーム情報を注文入力フォーム情報として保存
 		session.setAttribute("orderForm", orderForm);
 
@@ -86,7 +84,7 @@ public class ClientOrderRegistController {
 	}
 
 	@RequestMapping(value = "/client/order/payment/input", method = RequestMethod.GET)
-	public String showPaymentInput(Model model, HttpSession session) {
+	public String showPaymentInput(Model model) {
 		// セッションスコープから注文入力フォーム情報を取得
 		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
 
@@ -98,7 +96,7 @@ public class ClientOrderRegistController {
 	}
 
 	@RequestMapping(value = "/client/order/check", method = RequestMethod.POST)
-	public String processOrderCheck(@ModelAttribute("orderForm") OrderForm orderForm, HttpSession session) {
+	public String processOrderCheck(@ModelAttribute("orderForm") OrderForm orderForm) {
 		// セッションスコープから注文入力フォーム情報を取得
 		OrderForm storedOrderForm = (OrderForm) session.getAttribute("orderForm");
 
@@ -111,52 +109,52 @@ public class ClientOrderRegistController {
 		// 注文確認画面表示処理にリダイレクト
 		return "redirect:/client/order/check";
 	}
-	//
-	//	@RequestMapping(value = "/client/order/check", method = RequestMethod.GET)
-	//	public String showOrderCheckPage(Model model, HttpSession session) {
-	//		// セッションスコープから注文情報を取得
-	//		Order order = (Order) session.getAttribute("order");
-	//
-	//		// セッションスコープから買い物かご情報を取得
-	//		ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-	//
-	//		// 注文商品の最新情報をDBから取得し、在庫チェックをする
-	//		List<OrderItem> orderItems = order.getOrderItems();
-	//		for (OrderItem item : orderItems) {
-	//			// 最新の在庫情報をDBから取得
-	//			Product product = productService.getProductById(item.getProductId());
-	//
-	//			// 在庫チェックと注文数の調整
-	//			if (item.getQuantity() > product.getStock()) {
-	//				// 在庫不足の場合は警告メッセージを設定し、注文数を在庫数に調整
-	//				model.addAttribute("warningMessage", "在庫が不足しています");
-	//				item.setQuantity(product.getStock());
-	//			}
-	//		}
-	//
-	//		// 在庫切れ商品の削除
-	//		orderItems.removeIf(item -> item.getQuantity() <= 0);
-	//
-	//		// 在庫状況を反映した買い物かご情報をセッションに保存
-	//		session.setAttribute("cart", cart);
-	//
-	//		// 買い物かご情報から商品ごとの金額小計と合計金額を算出し、注文入力フォーム情報に設定
-	//		BigDecimal subtotal = BigDecimal.ZERO;
-	//		for (CartItem cartItem : cartItems) {
-	//			BigDecimal itemPrice = cartItem.getProduct().getPrice()
-	//					.multiply(BigDecimal.valueOf(cartItem.getQuantity()));
-	//			subtotal = subtotal.add(itemPrice);
-	//		}
-	//		BigDecimal total = subtotal.add(shippingFee); // 送料を合計金額に加算
-	//		orderForm.setSubtotal(subtotal);
-	//		orderForm.setTotal(total);
-	//
-	//		// 注文入力フォーム情報をリクエストスコープに設定
-	//		model.addAttribute("orderForm", orderForm);
-	//
-	//		// 注文確認画面を表示する
-	//		return "client/order/check";
-	//	}
+	
+		@RequestMapping(value = "/client/order/check", method = RequestMethod.GET)
+		public String showOrderCheckPage(Model model, HttpSession session, OrderItem orderItems) {
+			// セッションスコープから注文情報を取得
+			OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+	
+			// セッションスコープから買い物かご情報を取得
+//			ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+	
+//			// 注文商品の最新情報をDBから取得し、在庫チェックをする
+//			List<Integer> orderItem = orderForm.getOrderItems();
+//			for (OrderItem item : orderItem) {
+//				// 最新の在庫情報をDBから取得
+//				Product product = productService.getProductById(item.getProductId());
+//	
+//				// 在庫チェックと注文数の調整
+//				if (item.getQuantity() > product.getStock()) {
+//					// 在庫不足の場合は警告メッセージを設定し、注文数を在庫数に調整
+//					model.addAttribute("warningMessage", "在庫が不足しています");
+//					item.setQuantity(product.getStock());
+//				}
+//			}
+//	
+//			// 在庫切れ商品の削除
+//			orderItems.removeIf(item -> item.getQuantity() <= 0);
+//	
+//			// 在庫状況を反映した買い物かご情報をセッションに保存
+//			session.setAttribute("cart", cart);
+//	
+//			// 買い物かご情報から商品ごとの金額小計と合計金額を算出し、注文入力フォーム情報に設定
+//			BigDecimal subtotal = BigDecimal.ZERO;
+//			for (CartItem cartItem : cartItems) {
+//				BigDecimal itemPrice = cartItem.getProduct().getPrice()
+//						.multiply(BigDecimal.valueOf(cartItem.getQuantity()));
+//				subtotal = subtotal.add(itemPrice);
+//			}
+//			BigDecimal total = subtotal.add(shippingFee); // 送料を合計金額に加算
+//			orderForm.setSubtotal(subtotal);
+//			orderForm.setTotal(total);
+	
+			// 注文入力フォーム情報をリクエストスコープに設定
+			model.addAttribute("orderForm", orderForm);
+	
+			// 注文確認画面を表示する
+			return "client/order/check";
+		}
 
 	@RequestMapping(value = "/client/order/payment/back", method = RequestMethod.POST)
 	public String redirectToPaymentInput() {
@@ -164,11 +162,14 @@ public class ClientOrderRegistController {
 		return "redirect:/client/order/payment/input";
 	}
 
-	//	@RequestMapping(value = "/client/order/complete", method = RequestMethod.POST)
-	//	public String completeOrder(HttpSession session) {
-	//		// セッションスコープから注文情報を取得
-	//		Order order = (Order) session.getAttribute("order");
-	//
+		@RequestMapping(value = "/client/order/complete", method = RequestMethod.POST)
+		public String completeOrder(Model model,HttpSession session) {
+			// セッションスコープから注文情報を取得
+			OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+			
+			// 注文入力フォーム情報をセッションスコープに保存
+			model.addAttribute("orderForm", orderForm);
+			
 	//		// セッションスコープから買い物かご情報を取得
 	//		ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
 	//
@@ -188,10 +189,10 @@ public class ClientOrderRegistController {
 	//		// セッションスコープの注文入力フォーム情報と買い物かご情報を削除
 	//		session.removeAttribute("order");
 	//		session.removeAttribute("cart");
-	//
-	//		// 注文完了画面表示処理にリダイレクト
-	//		return "redirect:/client/order/complete";
-	//	}
+	
+			// 注文完了画面表示処理にリダイレクト
+			return "redirect:/client/order/complete";
+		}
 
 	@RequestMapping(value = "/client/order/complete", method = RequestMethod.GET)
 	public String showOrderCompletePage() {
