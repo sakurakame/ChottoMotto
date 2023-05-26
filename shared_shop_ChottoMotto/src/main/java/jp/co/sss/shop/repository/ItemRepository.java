@@ -65,4 +65,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	
 	@Query("SELECT new Item(i.id, i.name, i.price,i.description, i.image, c.name) FROM Item i INNER JOIN i.category c INNER JOIN i.orderItemList oi WHERE i.deleteFlag = 0 GROUP BY i.id, i.name, i.price,i.description, i.image, c.name ORDER BY COUNT(i.id) DESC,i.id ASC")
 	public List<Item> findItemOrderBySales();
+	
+	@Query("SELECT  i FROM Item i WHERE i.deleteFlag = 0 AND i.category.id = :categoryId")
+    public List<Item> findByCategoryId(@Param("categoryId") Integer categoryId);
 }

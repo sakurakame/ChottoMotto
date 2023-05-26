@@ -1,4 +1,4 @@
-	package jp.co.sss.shop.controller.client.item;
+package jp.co.sss.shop.controller.client.item;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
@@ -24,81 +25,82 @@ public class ClientItemShowController {
 	/** 商品情報 */
 	@Autowired
 	ItemRepository itemRepository;
-	
+
 	@Autowired
 	OrderItemRepository orderItemRepository;
 
 	@Autowired
 	BeanTools beanTools;
-	
+
 	/**
 	 * トップ画面 表示処理
 	 *
 	 * @param model    Viewとの値受渡し
 	 * @return "index" トップ画面
 	 */
-	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
 		List<Item> items = itemRepository.findItemOrderBySales();
-		model.addAttribute("items",items);
-		
-		
-		
+		model.addAttribute("items", items);
+
 		return "index";
 	}
-	
-	@RequestMapping(path="/client/item/list/{sortType}",method=RequestMethod.POST)
+
+	@RequestMapping(path = "/client/item/list/{sortType}", method = RequestMethod.POST)
 	public String list(Model model) {
 		List<Item> items = itemRepository.findAll();
-		model.addAttribute("items",items);
+		model.addAttribute("items", items);
 		System.out.println("こんにちは");
 		return "client/item/list";
 	}
-	
-	@RequestMapping(path="/client/item/detail/{id}")
+
+	@RequestMapping(path = "/client/item/detail/{id}")
 	public String detail(@PathVariable int id, Model model) {
 		Item item = itemRepository.findByIdQuery(id);
 		ItemBean itemBean = beanTools.copyEntityToItemBean(item);
 		model.addAttribute("item", itemBean);
 		return "client/item/detail";
 	}
-	
-	@RequestMapping(path="/client/item/list/{sortType}" ,method = RequestMethod.GET)
-	public String showListPageItems(@PathVariable int sortType, Model model) {
+
+	@RequestMapping(path = "/client/item/list/{sortType}", method = RequestMethod.GET)
+	public String showListPageItems(@PathVariable int sortType, @RequestParam(required = false) Integer categoryId, Model model) {
 		List<Item> item;
 		
-		model.addAttribute("sortType", sortType);
+		item = itemRepository.findAll();
+	
+
 		if (sortType == 1) {
 			item = itemRepository.findAllItemsDESC();
-		} else {
+
+
+		} else{
 			item = itemRepository.findItemOrderBySales();
+		
 		}
+		
+		if (categoryId != null) {
+			item = itemRepository.findByCategoryId(categoryId);
+		}
+		
 		model.addAttribute("items", item);
 		model.addAttribute("sortType", sortType);
-		
-		
-		return "client/item/list";
-	} 
 
-	@RequestMapping(path="/client/item/list/{sortType}?category={id}", method=RequestMethod.GET)
-	public String category(@PathVariable Integer id, Model model) {
-		List<Item> item;
-		if (id == 1) {
-			item = itemRepository.findCategoryFood();
-		} else if (id == 2) {
-			item = itemRepository.findCategoryNotFood();
-		} else {
-			item = itemRepository.findAll();
-		}
-		model.addAttribute("items", item);
-		model.addAttribute("id", id);
-		return "redirect:/client/item/list";
-		
+		return "client/item/list";
 	}
-	@RequestMapping(path="/{sortType}" ,method = RequestMethod.GET)
+
+	//	@RequestMapping(path="/client/item/list/{sortType}/categoryId/{id}", method=RequestMethod.GET)
+	//	public String category(@PathVariable int sortType, @RequestParam Integer id, Model model) {
+	//		System.err.println("あいうえお");
+	//		
+	//		List<Item> itemList = itemRepository.findByCategoryId(id);
+	//		model.addAttribute("items", itemList);
+	//		return "redirect:/client/item/list";
+	//		
+	//	}
+	@RequestMapping(path = "/{sortType}", method = RequestMethod.GET)
 	public String showTopPageItems(@PathVariable int sortType, Model model) {
 		List<Item> item;
-		
+
 		model.addAttribute("sortType", sortType);
 		if (sortType == 1) {
 			item = itemRepository.findAllItemsDESC();
@@ -107,9 +109,8 @@ public class ClientItemShowController {
 		}
 		model.addAttribute("items", item);
 		model.addAttribute("sortType", sortType);
-		
-		
+
 		return "index";
-	} 
-	
+	}
+
 }
