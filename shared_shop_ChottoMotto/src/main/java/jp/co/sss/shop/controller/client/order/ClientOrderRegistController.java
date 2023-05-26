@@ -107,10 +107,9 @@ public class ClientOrderRegistController {
 	public String showPaymentInput(Model model) {
 		// セッションスコープから注文入力フォーム情報を取得
 		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
-
+		
 		// 注文入力フォーム情報をリクエストスコープに設定
 		model.addAttribute("orderForm", orderForm);
-
 		// 支払方法選択画面を表示する
 		return "client/order/payment_input";
 	}

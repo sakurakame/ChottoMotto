@@ -9,7 +9,7 @@
 
 <body class="client user_regist_input_admin">
 	<h2 th:class="title" th:text="注文情報入力"></h2>
-	<p th:class="input_message" th:text="#{msg.order.address.input}"></p>
+	<p th:class="input_message" th:text="#{msg.order.address.input}" style="color:red"></p>
 
 	<div class="user_info_form_area">
 		<form th:action="@{/client/order/payment/input}" method="post" class="user_info_form" th:object="${orderForm}">
@@ -24,7 +24,7 @@
 			<ul class="input_list">
 				<li>
 					<label><span class="input_title">郵便番号</span></label>
-					<input type="text" th:field="*{postalCode}" />
+					<input type="text" th:placeholder="例：1570000" th:field="*{postalCode}" />
 				</li>
 				<li>
 					<label><span class="input_title">住所</span></label>
@@ -36,7 +36,7 @@
 				</li>
 				<li>
 					<label><span class="input_title">電話番号</span></label>
-					<input type="text" th:field="*{phoneNumber}" />
+					<input type="text" th:placeholder="例：08022223333" th:field="*{phoneNumber}" />
 				</li>
 
 			</ul>
