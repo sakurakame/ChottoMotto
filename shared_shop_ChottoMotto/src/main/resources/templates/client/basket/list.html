@@ -9,9 +9,10 @@
         <h2 class="title">買い物かご</h2>
         <div class="list" th:object="${myBaskets}">
         	<p th:if="${#lists.isEmpty(myBaskets)}"　th:text="#{msg.basket.list.none}"></p>
-        	<p th:each="basket : ${myBaskets}" th:if="${basket.orderNum > basket.stock}" 
-        	th:text="${basket.name}+'　は在庫不足のため、数を増やすことができません。'" 
-        	style="color:red"></p>
+        	<p th:each="basket : ${myBaskets}" th:if="${basket.stock==0}"
+        	th:text="#{msg.basket.stock.none(${basket.name})}" style="color:red"></p>
+        	<p th:each="basket : ${myBaskets}" th:if="${basket.stock != 0 and basket.orderNum > basket.stock}" 
+        	th:text="#{msg.basket.stock.short(${basket.name})}" style="color:red"></p>
             <table class="list_table" th:if="${!#lists.isEmpty(myBaskets)}">
                 <tr>
                     <th>商品名</th>
@@ -19,7 +20,7 @@
                     <th width="20%">操作</th>
                     <th align="left">在庫状況</th>
                 </tr>
-                <tr th:each="basket : ${myBaskets}">
+                <tr th:unless="${basket.stock == 0}" th:each="basket : ${myBaskets}">
                     <td>
                      <a th:href="@{/client/item/detail/{id}(id=${basket.id})}" th:text="${basket.name}"></a>
                      </td>
@@ -31,7 +32,7 @@
                         </form>
                     </td>
                     <td align="left">
-                      	<span th:if="${basket.stock > 5}">在庫あり</span>
+                      	<span th:if="${basket.stock > 5}" th:text="'在庫あり ('+${basket.stock}+')'"></span>
     					<span th:if="${basket.stock <= 5 && basket.stock > 0}" th:text="${basket.stock}"></span>
     					<span th:if="${basket.stock == 0}">在庫なし</span>
                      </td>

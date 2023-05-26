@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,8 +36,8 @@ public class ClientBasketController {
 		return "client/basket/list";
 	}
 
-	@RequestMapping(path = "/client/basket/add/{id}", method = RequestMethod.GET)
-	public String addItemToBasket(HttpSession session,  @PathVariable("id") Integer id, Model model) {
+	@RequestMapping(path = "/client/basket/add", method = RequestMethod.POST)
+	public String addItemToBasket(HttpSession session, Integer id, Model model) {
 			Item item = repository.findByIdQuery(id);
 			ItemBean itemBean = beanTools.copyEntityToItemBean(item);
 			model.addAttribute("item", itemBean);
@@ -59,7 +58,16 @@ public class ClientBasketController {
 		    }
 		    
 		    if (!itemExists) {
-			BasketBean basketBean = new BasketBean();
+		    BasketBean basketBean = new BasketBean();	
+		    	
+		    	if (item.getStock() == 0) {
+		            // Item stock is 0, prevent adding to the basket
+		    		basketBean.setStock(0);
+		    		basketBean.setName(item.getName());
+		    		myBaskets.add(basketBean);
+		            return "redirect:/client/basket/list";
+		    }
+
 			basketBean.setId(item.getId());
 			basketBean.setName(item.getName());
 			basketBean.setStock(item.getStock());
