@@ -58,7 +58,7 @@ public class ClientItemShowController {
 		return "client/item/detail";
 	}
 	
-	@RequestMapping(path="/", method=RequestMethod.GET)
+	@RequestMapping(path="/", method=RequestMethod.POST)
 	public String showTopPageItems(Model model) {
 		List<Item> item;
 		item = itemRepository.findAll();
