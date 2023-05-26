@@ -115,4 +115,5 @@ public class ClientItemShowController {
 		
 		return "index";
 	} 
+	
 }
