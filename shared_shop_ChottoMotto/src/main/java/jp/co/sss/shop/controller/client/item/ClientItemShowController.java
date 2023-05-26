@@ -82,20 +82,16 @@ public class ClientItemShowController {
 
 	@RequestMapping(path="/client/item/list/{sortType}?category={id}", method=RequestMethod.GET)
 	public String category(@PathVariable Integer id, Model model) {
-		List<Item> items = null;
+		List<Item> item;
 		if (id == 1) {
-			items = itemRepository.findCategoryFood();
-			model.addAttribute("items", items);
-			model.addAttribute("id", id);
+			item = itemRepository.findCategoryFood();
 		} else if (id == 2) {
-			items = itemRepository.findCategoryNotFood();
-			model.addAttribute("items", items);
-			model.addAttribute("id", id);
+			item = itemRepository.findCategoryNotFood();
 		} else {
-			items = itemRepository.findAll();
-			model.addAttribute("items", items);
-			model.addAttribute("id", id);
+			item = itemRepository.findAll();
 		}
+		model.addAttribute("items", item);
+		model.addAttribute("id", id);
 		return "redirect:/client/item/list";
 		
 	}
