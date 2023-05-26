@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Item;
-import jp.co.sss.shop.entity.OrderItem;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.service.BeanTools;
@@ -43,12 +42,13 @@ public class ClientItemShowController {
 		return "index";
 	}
 	
-	@RequestMapping(path="/client/item/list/{sortType}")
-	public String list(Model model) {
-		List<Item> items = itemRepository.findAll();
-		model.addAttribute("items",items);
-		return "client/item/list";
-	}
+//	@RequestMapping(path="/client/item/list/{sortType}")
+//	public String list(Model model) {
+//		List<Item> items = itemRepository.findAll();
+//		model.addAttribute("items",items);
+//		System.out.println("こんにちは");
+//		return "client/item/list";
+//	}
 	
 	@RequestMapping(path="/client/item/detail/{id}")
 	public String detail(@PathVariable int id, Model model) {
@@ -58,25 +58,24 @@ public class ClientItemShowController {
 		return "client/item/detail";
 	}
 	
-	@RequestMapping(path="/", method=RequestMethod.POST)
-	public String showTopPageItems(Model model) {
+	@RequestMapping(path="/client/item/list/{sortType}")
+	public String showTopPageItems(@PathVariable int sortType, Model model) {
 		List<Item> item;
-		item = itemRepository.findAll();
-		List<OrderItem> order;
-		order = orderItemRepository.findAll();
 		
-		int sortType = 1;
-		model.addAttribute("sortType", 1);
+		
+		model.addAttribute("sortType", sortType);
 		if (sortType == 1) {
 			item = itemRepository.findAllItemsDESC();
+			System.err.println("こんにちは");
 		} else {
-			order = orderItemRepository.findAllByOrderByQuantityDesc();
+			item = itemRepository.findItemOrderBySales();
+			System.err.println("こんばんは");
 		}
 		model.addAttribute("items", item);
 		model.addAttribute("sortType", sortType);
-		model.addAttribute("orderitems", order);
 		
-		return "index";
+		
+		return "client/item/list";
 	} 
 
 	@RequestMapping(path="/client/item/list/{sortType}?category={id}", method=RequestMethod.GET)
