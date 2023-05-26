@@ -63,6 +63,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	@Query("SELECT i FROM Item i")
 	public Item findAllItemCategories();
 	
-	@Query("SELECT i FROM Item i JOIN i.orderItemList oi GROUP BY i.id ORDER BY SUM(oi.quantity) DESC")
+	@Query("SELECT new Item(i.id, i.name, i.price,i.description, i.image, c.name) FROM Item i INNER JOIN i.category c INNER JOIN i.orderItemList oi WHERE i.deleteFlag = 0 GROUP BY i.id, i.name, i.price,i.description, i.image, c.name ORDER BY COUNT(i.id) DESC,i.id ASC")
 	public List<Item> findItemOrderBySales();
 }
