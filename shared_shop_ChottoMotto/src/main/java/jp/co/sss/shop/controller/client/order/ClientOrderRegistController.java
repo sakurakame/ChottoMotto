@@ -227,10 +227,7 @@ public class ClientOrderRegistController {
 		User user = userDao.findById(id).orElseThrow();
 		
 
-		System.out.println("ここまで来たよ");
-
 		for(BasketBean goods :myBaskets) {
-			OrderItemBean orderItemBean = new OrderItemBean();
 			Item item = itemRepository.getReferenceById(goods.getId());
 			Order order = orderRepository.getReferenceById(goods.getId());
 			
@@ -264,16 +261,7 @@ public class ClientOrderRegistController {
 		setOrder.setUser(user);
 		BeanUtils.copyProperties(orderForm, setOrder);
 		orderRepository.save(setOrder);
-		
-//		System.out.println(order.getAddress());
-//		System.err.println(order.getName());
-//		System.out.println(order.getPhoneNumber());
-//		System.err.println(order.getId());
-//		System.out.println(order.getOrderItemsList());
-//		System.err.println(order.getInsertDate());
-
-		System.err.println("kokomade");
-		
+				
 		
 		// セッションスコープの注文入力フォーム情報と買い物かご情報を削除
 		session.removeAttribute("orderForm");
