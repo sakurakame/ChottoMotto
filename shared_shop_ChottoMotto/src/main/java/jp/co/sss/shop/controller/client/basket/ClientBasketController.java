@@ -80,7 +80,7 @@ public class ClientBasketController {
 		model.addAttribute("myBaskets", myBaskets);
 			
 			
-		return "client/basket/list";
+		return "redirect:/client/basket/list";
 	}
 	
 	@RequestMapping(path = "/client/basket/delete")
@@ -105,6 +105,7 @@ public class ClientBasketController {
 	        }
 
 	        session.setAttribute("myBaskets", myBaskets);
+	        model.addAttribute("myBaskets", myBaskets);
 	    }
 		return "redirect:/client/basket/list";
 	}
@@ -114,6 +115,8 @@ public class ClientBasketController {
 		@SuppressWarnings("unchecked")
 		List<BasketBean> myBaskets = (List<BasketBean>)session.getAttribute("myBaskets");
 		myBaskets.removeAll(myBaskets);
+		session.setAttribute("myBaskets", myBaskets);
+		model.addAttribute("myBaskets", myBaskets);
 		return "redirect:/client/basket/list";
 	}
 }
