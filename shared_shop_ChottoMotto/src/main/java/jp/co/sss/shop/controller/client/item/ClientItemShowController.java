@@ -42,13 +42,13 @@ public class ClientItemShowController {
 		return "index";
 	}
 	
-//	@RequestMapping(path="/client/item/list/{sortType}")
-//	public String list(Model model) {
-//		List<Item> items = itemRepository.findAll();
-//		model.addAttribute("items",items);
-//		System.out.println("こんにちは");
-//		return "client/item/list";
-//	}
+	@RequestMapping(path="/client/item/list/{sortType}",method=RequestMethod.POST)
+	public String list(Model model) {
+		List<Item> items = itemRepository.findAll();
+		model.addAttribute("items",items);
+		System.out.println("こんにちは");
+		return "client/item/list";
+	}
 	
 	@RequestMapping(path="/client/item/detail/{id}")
 	public String detail(@PathVariable int id, Model model) {
@@ -58,18 +58,16 @@ public class ClientItemShowController {
 		return "client/item/detail";
 	}
 	
-	@RequestMapping(path="/client/item/list/{sortType}")
-	public String showTopPageItems(@PathVariable int sortType, Model model) {
+	@RequestMapping(path="/client/item/list/{sortType}" ,method = RequestMethod.POST)
+	public String showListPageItems(@PathVariable int sortType, Model model) {
 		List<Item> item;
 		
 		
 		model.addAttribute("sortType", sortType);
 		if (sortType == 1) {
 			item = itemRepository.findAllItemsDESC();
-			System.err.println("こんにちは");
 		} else {
 			item = itemRepository.findItemOrderBySales();
-			System.err.println("こんばんは");
 		}
 		model.addAttribute("items", item);
 		model.addAttribute("sortType", sortType);
@@ -94,4 +92,20 @@ public class ClientItemShowController {
 		return "client/item/list";
 		
 	}
+	@RequestMapping(path="/{sortType}" ,method = RequestMethod.GET)
+	public String showTopPageItems(@PathVariable int sortType, Model model) {
+		List<Item> item;
+		
+		model.addAttribute("sortType", sortType);
+		if (sortType == 1) {
+			item = itemRepository.findAllItemsDESC();
+		} else {
+			item = itemRepository.findItemOrderBySales();
+		}
+		model.addAttribute("items", item);
+		model.addAttribute("sortType", sortType);
+		
+		
+		return "index";
+	} 
 }
