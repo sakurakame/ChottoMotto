@@ -39,6 +39,11 @@ public class ClientItemShowController {
 	 */
 	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
+		List<Item> items = itemRepository.findAll();
+		model.addAttribute("items",items);
+		
+		
+		
 		return "index";
 	}
 	
@@ -58,7 +63,7 @@ public class ClientItemShowController {
 		return "client/item/detail";
 	}
 	
-	@RequestMapping(path="/client/item/list/{sortType}" ,method = RequestMethod.POST)
+	@RequestMapping(path="/client/item/list/{sortType}" ,method = RequestMethod.GET)
 	public String showListPageItems(@PathVariable int sortType, Model model) {
 		List<Item> item;
 		
