@@ -11,100 +11,98 @@
 
 <body class="client">
 	<h2 th:class="title" th:text="注文確認"></h2>
-		
-		<!--/* 登録なしメッセージ */-->
+
+	<!--/* 登録なしメッセージ */-->
 	<div th:if="${#lists.isEmpty(orders)}">
 		<p th:text="#{msg.admin.list.none(注文)}"></p>
 	</div>
 
 	<p th:class="input_message" th:text="#{msg.order.check}"></p>
+	<table class="list_table item_list">
 
-	<div class="user_info_form_area">
-		<!-- 注文商品一覧 -->
-		<table class="list_table item_list">
-			<thead>
-				<tr>
-					<th>商品名称</th>
-					<th>商品画像</th>
-					<th>単価</th>
-					<th>数量</th>
-					<th>小計</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- 注文商品の情報を繰り返し表示 -->
-				<tr th:each="item: ${items}">
-					<td th:text="${item.name}"></td>
-					<td><img src="{商品画像のURL}" alt="商品画像"></td>
-					<td th:text="${item.price}"></td>
-					<td>{数量}</td>
-					<td>{小計}</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="4">合計</td>
-					<td>{合計}</td>
-				</tr>
-			</tfoot>
+		<tr>
+			<th>商品名称</th>
+			<th>商品画像</th>
+			<th>単価</th>
+			<th>数量</th>
+			<th>小計</th>
+		</tr>
+
+
+		<!-- 注文商品の情報を繰り返し表示 -->
+		<div th:each="items: ${session.orderItemBeans}">
+			<tr>
+				<td th:text="${items.name}"></td>
+				<td th:text="${items.image}"></td>
+				<td th:text="${items.price}"></td>
+				<td th:text="${items.orderNum}"></td>
+				<td th:text="${items.subtotal}"></td>
+			</tr>
+
+		</div>
+		<tr>
+			<td colspan="4">合計</td>
+			<td th:text="${subtotal}"></td>
+		</tr>
+
+	</table>
+
+	<!-- お届け先-->
+	<div class="info_form_area">
+		<table class="detail_table payment" th:each="order: ${session.orderForm}">
+			<caption>お届け先</caption>
+			<tr>
+				<th>郵便番号</th>
+				<td th:text="${order. postalCode}"></td>
+			</tr>
+			<tr>
+				<th>住所</th>
+				<td th:text="${order.address}"></td>
+			</tr>
+			<tr>
+				<th>氏名</th>
+				<td class="value" th:text="${order.name}"></td>
+			</tr>
+			<tr>
+				<th>電話番号</th>
+				<td class="value" th:text="${order.phoneNumber}"></td>
+			</tr>
 		</table>
 
-		<!-- お届け先-->
-		<div class="info_form_area">
-			<table class="detail_table payment" th:each="order: ${orderForm}">
-				<caption>お届け先</caption>
-				<tr>
-					<th>郵便番号</th>
-					<td th:text="${order. postalCode}"></td>
-				</tr>
-				<tr>
-					<th>住所</th>
-					<td th:text="${order.address}"></td>
-				</tr>
-				<tr>
-					<th>氏名</th>
-					<td class="value" th:text="${order.name}"></td>
-				</tr>
-				<tr>
-					<th>電話番号</th>
-					<td class="value" th:text="${order.phoneNumber}"></td>
-				</tr>
-			</table>
 
 
 
+		<table class="detail_table payment" th:each="order: ${session.orderForm}">
+			<caption>お支払方法</caption>
+			<tr>
+				<th>お支払い方法</th>
+				<td th:switch="${order.payMethod}">
+					<span th:case="1">クレジットカード</span>
+					<span th:case="2">銀行振込</span>
+					<span th:case="3">着払い</span>
+					<span th:case="4">電子マネー</span>
+					<span th:case="5">コンビニ決済</span>
+				</td>
 
-			<table class="detail_table payment" th:each="order: ${orderForm}">
-				<caption>お支払方法</caption>
-				<tr>
-					<th>お支払い方法</th>
-					<td th:switch="${order.payMethod}">
-						<span th:case="1">クレジットカード</span>
-						<span th:case="2">銀行振込</span>
-						<span th:case="3">着払い</span>
-						<span th:case="4">電子マネー</span>
-						<span th:case="5">コンビニ決済</span>
-					</td>
-			
-				</tr>
-			</table>
+			</tr>
+		</table>
 
-			<!-- ご注文の確定ボタン -->
-			<form th:action="@{/client/order/complete}"  method="post" >
-				<input type="submit" value="ご注文の確定" />
-			</form>
-			<form th:action="@{/client/order/payment/back}" method="post">
-				<input type="submit" value="戻る" class="back_button" />
-			</form>
+		<!-- ご注文の確定ボタン -->
+		<form th:action="@{/client/order/complete}" method="post">
+			<input type="submit" value="ご注文の確定" />
+		</form>
+		<form th:action="@{/client/order/payment/back}" method="post">
+			<input type="submit" value="戻る" class="back_button" />
+		</form>
 
-			<!-- 注文時点で注文対象商品の在庫がすべて0の場合のメッセージ -->
-			<p>ご注文を中止いたします。</p>
-
+		<!-- 注文時点で注文対象商品の在庫がすべて0の場合のメッセージ -->
+		<p>ご注文を中止いたします。</p>
 
 
-			<!-- トップへ戻るリンク -->
-			<p><a th:href="@{/}">トップへ戻る</a></p>
-		</div>
+
+		<!-- トップへ戻るリンク -->
+		<p><a th:href="@{/}">トップへ戻る</a></p>
+	</div>
 </body>
 
 </html>
