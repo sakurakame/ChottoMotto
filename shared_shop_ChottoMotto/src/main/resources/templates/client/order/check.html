@@ -7,8 +7,16 @@
 	<meta charset="UTF-8">
 </head>
 
+
+
 <body class="client">
 	<h2 th:class="title" th:text="注文確認"></h2>
+		
+		<!--/* 登録なしメッセージ */-->
+	<div th:if="${#lists.isEmpty(orders)}">
+		<p th:text="#{msg.admin.list.none(注文)}"></p>
+	</div>
+
 	<p th:class="input_message" th:text="#{msg.order.check}"></p>
 
 	<div class="user_info_form_area">
@@ -77,7 +85,7 @@
 						<span th:case="4">電子マネー</span>
 						<span th:case="5">コンビニ決済</span>
 					</td>
-
+			
 				</tr>
 			</table>
 
