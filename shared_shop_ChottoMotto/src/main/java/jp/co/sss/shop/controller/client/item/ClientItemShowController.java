@@ -39,7 +39,7 @@ public class ClientItemShowController {
 	 */
 	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model) {
-		List<Item> items = itemRepository.findAll();
+		List<Item> items = itemRepository.findItemOrderBySales();
 		model.addAttribute("items",items);
 		
 		
