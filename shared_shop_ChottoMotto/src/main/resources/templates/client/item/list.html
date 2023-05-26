@@ -19,9 +19,9 @@
 	</tr>
 	<tr th:each="item:${items}" th:if="${item.deleteFlag != 1}">
 		<td>
-		<img th:if="*{image != null}" 
-		th:src="@{/images/{image}(image=*{image})}" alt="Image" th:style="'width:100px; height: auto;'"></img>
-		<img th:if="*{image == null}" 
+		<img th:if="${item.image != null}" 
+		th:src="@{/images/{image}(image=${item.image})}" alt="Image" th:style="'width:100px; height: auto;'"></img>
+		<img th:if="${item.image == null}" 
 		th:src="@{/images/common/no_image.jpg}" alt="Image" th:style="'width:100px; height: auto;'"/></img>
 		</td>
 		<td>
