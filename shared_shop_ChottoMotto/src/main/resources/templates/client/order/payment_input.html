@@ -22,7 +22,9 @@
 			</th:block>
 
 			<label>
-				<input type="radio" name="paymentMethod" th:field="*{payMethod}" value="1">
+
+				<input  type="radio" name="paymentMethod" th:field="*{payMethod}" value="1"
+				th:checked="*{payMethod == 0}">
 				クレジットカード
 			</label>
 			<br>

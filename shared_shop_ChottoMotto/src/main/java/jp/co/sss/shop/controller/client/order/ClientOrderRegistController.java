@@ -26,6 +26,7 @@ import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.repository.UserDao;
 import jp.co.sss.shop.util.Constant;
+import jp.co.sss.shop.util.PriceCalc;
 
 @Controller
 public class ClientOrderRegistController {
@@ -134,7 +135,7 @@ public class ClientOrderRegistController {
 	@RequestMapping(path = "/client/order/check", method = RequestMethod.GET)
 	public String showOrderCheckPage(Model model, HttpSession session, OrderItem orderItems) {
 		// セッションスコープから注文情報を取得
-		OrderForm orderForm = (OrderForm) session.getAttribute("orderForm");
+		OrderForm OrderForm = (OrderForm) session.getAttribute("orderForm");
 		
 		// セッションスコープから買い物かご情報を取得
 		@SuppressWarnings("unchecked")
@@ -160,58 +161,55 @@ public class ClientOrderRegistController {
 		List<BasketBean> newBasketBeans = new ArrayList<>();
 		List<String> lessItemName = new ArrayList<>();
 		List<String> zeroItemNames = new ArrayList<>();
-		List<OrderItemBean> oredItemBeans = new ArrayList<>();
-		OrderItemBean orderItemBean = new OrderItemBean();
+		List<OrderItemBean> orderItemBeans = new ArrayList<>();
 		Item item;
 		
 		// 注文商品の最新情報をDBから取得し、在庫チェックをする
 		for(BasketBean goods :myBaskets) {
+			OrderItemBean orderItemBean = new OrderItemBean();
 			goods.getName();
 			item = itemRepository.getReferenceById(goods.getId());
 			if(item.getStock() == 0)
 			{
+				System.err.println("在庫ないよ");
 				continue;
 			}
+			//在庫が注文数より少ない場合
+			// 在庫切れ商品の削除
 			else if(item.getStock() < goods.getOrderNum())
 			{
+				System.err.println("少ないよ");
 				goods.setOrderNum(item.getStock());
 			}
 			orderItemBean.setId(goods.getId());
+			orderItemBean.setName(goods.getName());
+			orderItemBean.setPrice(item.getPrice());
+			orderItemBean.setImage(item.getImage());
+			orderItemBean.setOrderNum(goods.getOrderNum());
+			orderItemBean.setSubtotal(item.getPrice()*goods.getOrderNum());
 			
-			oredItemBeans.add(orderItemBean);
-			
+			System.err.println(orderItemBean.getName());
+			orderItemBeans.add(orderItemBean);			
 		}
 		
-
-		//			// 注文商品の最新情報をDBから取得し、在庫チェックをする
-		//			List<Integer> orderItem = orderForm.getOrderItems();
-		//			for (OrderItem item : orderItem) {
-		//				// 最新の在庫情報をDBから取得
-		//				Product product = productService.getProductById(item.getProductId());
-		//	
-		//				// 在庫チェックと注文数の調整
-		//				if (item.getQuantity() > product.getStock()) {
-		//					// 在庫不足の場合は警告メッセージを設定し、注文数を在庫数に調整
-		//					model.addAttribute("warningMessage", "在庫が不足しています");
-		//					item.setQuantity(product.getStock());
-		//				}
-		//			}
-		//	
-		//			// 在庫切れ商品の削除
-		//			orderItems.removeIf(item -> item.getQuantity() <= 0);
-		//	
-		//			// 在庫状況を反映した買い物かご情報をセッションに保存
-		//			session.setAttribute("cart", cart);
-		//	
-		//			// 買い物かご情報から商品ごとの金額小計と合計金額を算出し、注文入力フォーム情報に設定
-		//			BigDecimal subtotal = BigDecimal.ZERO;
-		//			for (CartItem cartItem : cartItems) {
-		//				BigDecimal itemPrice = cartItem.getProduct().getPrice()
-		//						.multiply(BigDecimal.valueOf(cartItem.getQuantity()));
-		//				subtotal = subtotal.add(itemPrice);
-		//			}
+		for(OrderItemBean i:orderItemBeans) {
+			System.out.println(i.getName());
+		}
+		newBasketBeans = myBaskets;
+		session.setAttribute("newBasketBeans", newBasketBeans);
+		
+		
+		// 買い物かご情報から商品ごとの金額小計と合計金額を算出し、注文入力フォーム情報に設定
+		Integer subtotal = PriceCalc.orderItemBeanPriceTotalUseSubtotal(orderItemBeans);
+				
+		
 		// 注文入力フォーム情報をリクエストスコープに設定
-		model.addAttribute("oredItemBeans", oredItemBeans);
+		session.setAttribute("orderItemBeans", orderItemBeans);
+		model.addAttribute("subtotal", subtotal);
+		
+		// 注文入力フォーム情報をセッションスコープに保存
+		session.setAttribute("orderForm", OrderForm);
+
 
 		// 注文確認画面を表示する
 		return "client/order/check";
@@ -234,8 +232,6 @@ public class ClientOrderRegistController {
 		@SuppressWarnings("unchecked")
 		List<BasketBean>  myBaskets = (List<BasketBean>)session.getAttribute("myBaskets");
 
-		// 注文入力フォーム情報をセッションスコープに保存
-		model.addAttribute("orderForm", orderForm);
 		
 
 
@@ -258,6 +254,9 @@ public class ClientOrderRegistController {
 		//		// セッションスコープの注文入力フォーム情報と買い物かご情報を削除
 		//		session.removeAttribute("order");
 		//		session.removeAttribute("myBaskets");
+		
+		// 注文入力フォーム情報をセッションスコープに保存
+		model.addAttribute("orderForm", orderForm);
 
 		// 注文完了画面表示処理にリダイレクト
 		return "redirect:/client/order/complete";
