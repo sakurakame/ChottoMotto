@@ -67,7 +67,6 @@ public class ClientItemShowController {
 	public String showListPageItems(@PathVariable int sortType, Model model) {
 		List<Item> item;
 		
-		
 		model.addAttribute("sortType", sortType);
 		if (sortType == 1) {
 			item = itemRepository.findAllItemsDESC();
