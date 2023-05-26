@@ -17,7 +17,7 @@
 		<th>価格</th>
 		<th>カテゴリー</th>
 	</tr>
-	<tr th:each="item:${items}" >
+	<tr th:each="item:${items}" th:if="${item.deleteFlag != 1}">
 		<td>
 		<img th:if="*{image != null}" 
 		th:src="@{/images/{image}(image=*{image})}" alt="Image" th:style="'width:100px; height: auto;'"></img>
