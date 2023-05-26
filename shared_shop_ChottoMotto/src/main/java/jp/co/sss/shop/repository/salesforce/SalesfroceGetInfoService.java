@@ -1,16 +1,20 @@
 package jp.co.sss.shop.repository.salesforce;
 
-import java.io.IOException;
 import java.net.URI;
 
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -96,41 +100,39 @@ class SalesfroceGetInfoService {
 	private JsonNode executeSOQL(String soql, String json) {
 		System.out.println("** SalesfroceGetInfoService.executeSOQL() **");
 		JsonNode queryResults = null;
+		try {
+			// "instance_url"と"access_token"の取得
+			final JSONObject jsonObject = (JSONObject) new JSONTokener(json).nextValue();
+			final String instanceUrl = jsonObject.getString("instance_url");
+			final String accessToken = jsonObject.getString("access_token");
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode jsonNode;
-		
-		//jsonをJsonNodeに変換
-		 try {
-		        jsonNode = objectMapper.readTree(json);
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		        return queryResults;
-		    }
-		 
-		String instanceUrl = jsonNode.get("instance_url").asText();
-		String accessToken = jsonNode.get("access_token").asText();
+			// URLとHttpヘッダ組み立て→resuest
+			String url = instanceUrl + "/services/data/v50.0/query/?q={soql}";
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Authorization","Bearer " + accessToken);
+			System.out.println("url="+url);
+			RequestEntity<?> request = RequestEntity.get(url, soql).headers(headers).build();
 
-		// HttpHeaders作って、それを使ってRequestEntity作成
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Authorization", "Bearer " + accessToken);
-		RequestEntity<?> request = RequestEntity.get(URI.create(instanceUrl)).headers(headers).build();
+			// RestTemplateのexchangeで処理呼んで、response取得
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<String> response = restTemplate.exchange(request, String.class);
 
-		// RestTemplate作成
-		RestTemplate restTemplate = new RestTemplate();
-		// RestTemplateでGET実行
-		ResponseEntity<String> response = restTemplate.exchange(request, String.class);
-		
-		// レスポンスの本文を取得
-	    String responseBody = response.getBody();
-	    
-	 // レスポンスボディをJsonNodeに変換
-	    try {
-	        queryResults = objectMapper.readTree(responseBody);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-
+			// responseのstatusCodeで処理成功か否か判定
+			final HttpStatus statusCode = response.getStatusCode();
+			if (statusCode.equals(HttpStatus.OK)) {
+				queryResults = new ObjectMapper().readValue(response.getBody(), JsonNode.class);
+			} else {
+				System.err.println("Error Execute SOQL(" + soql + ") to Salesforce.com:" + statusCode);
+			}
+		} catch (HttpClientErrorException e) {
+			//4xx系のエラー
+			System.err.println("Error status=" + e.getRawStatusCode() + "," + e.getResponseBodyAsString());
+		} catch (HttpServerErrorException e) {
+			//5xx系のエラー
+			System.err.println("Error status=" + e.getRawStatusCode() + "," + e.getResponseBodyAsString());
+		} catch (Exception e) {
+			System.err.println(e.getMessage() + ":" + e.getCause());
+		}
 		System.out.println("queryResults=" + queryResults);
 		return queryResults;
 	}
