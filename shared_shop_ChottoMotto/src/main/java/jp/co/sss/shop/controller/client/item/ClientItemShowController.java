@@ -86,14 +86,17 @@ public class ClientItemShowController {
 		if (id == 1) {
 			items = itemRepository.findCategoryFood();
 			model.addAttribute("items", items);
+			model.addAttribute("id", id);
 		} else if (id == 2) {
 			items = itemRepository.findCategoryNotFood();
 			model.addAttribute("items", items);
+			model.addAttribute("id", id);
 		} else {
 			items = itemRepository.findAll();
 			model.addAttribute("items", items);
+			model.addAttribute("id", id);
 		}
-		return "client/item/list";
+		return "redirect:/client/item/list";
 		
 	}
 	@RequestMapping(path="/{sortType}" ,method = RequestMethod.GET)
