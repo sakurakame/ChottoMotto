@@ -230,6 +230,7 @@ public class ClientOrderRegistController {
 		for(BasketBean goods :myBaskets) {
 			Item item = itemRepository.getReferenceById(goods.getId());
 			Order order = orderRepository.getReferenceById(goods.getId());
+			System.err.println(order.getAddress());
 			
 			if (goods.getStock() > item.getStock()) {
 				System.out.println("ここどうしよう");
@@ -239,14 +240,14 @@ public class ClientOrderRegistController {
 			}
 			
 			//在庫の差分,更新 item
-			Integer dif = goods.getStock()-item.getStock();
+			Integer dif = item.getStock()-goods.getOrderNum();
 			item.setStock(dif);
 			
 			itemRepository.save(item);
 			
 			//更新 order_item
 			OrderItem orderItem = new OrderItem();
-			orderItem.setQuantity(goods.getStock());
+			orderItem.setQuantity(goods.getOrderNum());
 			orderItem.setOrder(order);
 			orderItem.setItem(item);
 			orderItem.setPrice(item.getPrice());
