@@ -13,7 +13,7 @@
 	<h2 th:class="title" th:text="注文確認"></h2>
 
 	<!--/* 登録なしメッセージ */-->
-	<div th:if="${#lists.isEmpty(orders)}">
+	<div th:if="${#lists.isEmpty(session.orderItemBeans)}">
 		<p th:text="#{msg.admin.list.none(注文)}"></p>
 	</div>
 
@@ -101,7 +101,7 @@
 		</form>
 
 		<!-- 注文時点で注文対象商品の在庫がすべて0の場合のメッセージ -->
-		<p>ご注文を中止いたします。</p>
+		<p><a th:href="@{/client/basket/allDelete}">ご注文を中止</p>
 
 
 

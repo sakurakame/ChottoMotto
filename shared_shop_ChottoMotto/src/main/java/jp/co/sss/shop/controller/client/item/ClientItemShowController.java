@@ -80,7 +80,12 @@ public class ClientItemShowController {
 		
 		if (categoryId != null) {
 			item = itemRepository.findByCategoryId(categoryId);
+			
+			if (categoryId == 0) {
+				item = itemRepository.findAllItems();
+			}
 		}
+		
 		
 		model.addAttribute("items", item);
 		model.addAttribute("sortType", sortType);

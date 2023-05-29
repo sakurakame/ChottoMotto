@@ -51,7 +51,11 @@ public class ClientBasketController {
 			boolean itemExists = false;
 		    for (BasketBean basketItem : myBaskets) {
 		        if (basketItem.getId().equals(item.getId())) {
-		            basketItem.setOrderNum(basketItem.getOrderNum() + 1);
+		        	if (basketItem.getOrderNum() >= basketItem.getStock()) {
+		        		basketItem.setOrderNum(basketItem.getStock());
+		        	} else {
+		        		basketItem.setOrderNum(basketItem.getOrderNum() + 1);
+		        	}
 		            itemExists = true;
 		            break;
 		        }
@@ -66,7 +70,8 @@ public class ClientBasketController {
 		    		basketBean.setName(item.getName());
 		    		myBaskets.add(basketBean);
 		            return "redirect:/client/basket/list";
-		    }
+		            
+		    	}
 
 			basketBean.setId(item.getId());
 			basketBean.setName(item.getName());

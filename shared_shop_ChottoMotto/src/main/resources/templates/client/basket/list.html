@@ -11,7 +11,7 @@
         	<p th:if="${#lists.isEmpty(myBaskets)}"　th:text="#{msg.basket.list.none}"></p>
         	<p th:each="basket : ${myBaskets}" th:if="${basket.stock==0}"
         	th:text="#{msg.basket.stock.none(${basket.name})}" style="color:red"></p>
-        	<p th:each="basket : ${myBaskets}" th:if="${basket.stock != 0 and basket.orderNum > basket.stock}" 
+        	<p th:each="basket : ${myBaskets}" th:if="${basket.stock != 0 and basket.orderNum >= basket.stock}" 
         	th:text="#{msg.basket.stock.short(${basket.name})}" style="color:red"></p>
             <table class="list_table" th:if="${!#lists.isEmpty(myBaskets)}">
                 <tr>
