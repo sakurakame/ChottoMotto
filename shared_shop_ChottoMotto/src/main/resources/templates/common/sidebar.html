@@ -15,7 +15,7 @@
 					<option th:value="0" th:text="--指定なし--"></option>
 					<option th:each="category: ${categories}"
 						th:value="${category.id}" th:text="${category.name}"></option>
-				</select> <input type="submit" th:value="操作" />
+				</select> <input type="submit" th:value="検索" />
 			</form>
 			<!--/* 商品一覧画面上で表示 */-->
 			<form th:unless="${sortType == null}" th:action="@{/client/item/list/} + ${sortType}">
@@ -23,7 +23,7 @@
 					<option th:value="0" th:text="--指定なし--"></option>
 					<option th:each="category: ${categories}"
 						th:value="${category.id}" th:text="${category.name}" th:selected="${category.id} == ${categoryId}"></option>
-				</select> <input type="submit" th:value="操作" />
+				</select> <input type="submit" th:value="検索" />
 			</form>
 		</div>
 	</div>

@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+
 <head>
 	<title th:text="'商品一覧 | '+ #{shop.title}"> </title>
 	<meta charset="UTF-8" />
 </head>
+
 <body>
-<h2 th:class="title" th:text="商品一覧"></h2>
-<br>
-	<a th:href="@{/client/item/list/1}" th:text="新着順"></a>
-	<a th:href="@{/client/item/list/2}" th:text="売れ筋順"></a>
-<table class="item list_table">
-	<tr>
-		<th>商品画像</th>
-		<th>商品名</th>
-		<th>価格</th>
-		<th>カテゴリー</th>
-	</tr>
-	<tr th:each="item:${items}" th:if="${item.deleteFlag != 1}">
-		<td>
-		<img th:if="${item.image != null}" 
-		th:src="@{/images/{image}(image=${item.image})}" alt="Image" th:style="'width:100px; height: auto;'"></img>
-		<img th:if="${item.image == null}" 
-		th:src="@{/images/common/no_image.jpg}" alt="Image" th:style="'width:100px; height: auto;'"/></img>
-		</td>
-		<td>
-		<a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a>
-		</td>	
-		<td th:text="${item.price}"></td>
-		<td th:text="${item.category.name}"></td>
-	</tr>
-</table>	
+	<h2 th:class="title" th:text="商品一覧"></h2>
+	<br>
+	<div th:if="${sortType == 1}">
+		<span> 新着順 </span>
+		<a th:href="@{/client/item/list/2}" th:text="売れ筋順"></a>
+	</div>
+
+	<div th:if="${sortType != 1}">
+		<a th:href="@{/client/item/list/1}" th:text="新着順"></a>
+		<span> 売れ筋順 </span>
+	</div>
+
+	<table class="item list_table">
+		<tr>
+			<th>商品画像</th>
+			<th>商品名</th>
+			<th>価格</th>
+			<th>カテゴリー</th>
+		</tr>
+		<tr th:each="item:${items}" th:if="${item.deleteFlag != 1}">
+			<td>
+				<img th:if="${item.image != null}" th:src="@{/images/{image}(image=${item.image})}" alt="Image"
+					th:style="'width:100px; height: auto;'"></img>
+				<img th:if="${item.image == null}" th:src="@{/images/common/no_image.jpg}" alt="Image"
+					th:style="'width:100px; height: auto;'" /></img>
+			</td>
+			<td>
+				<a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a>
+			</td>
+			<td th:text="${item.price}"></td>
+			<td th:text="${item.category.name}"></td>
+		</tr>
+	</table>
 </body>
+
 </html>

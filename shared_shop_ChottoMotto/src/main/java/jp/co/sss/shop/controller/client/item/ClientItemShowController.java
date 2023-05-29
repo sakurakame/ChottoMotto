@@ -47,10 +47,10 @@ public class ClientItemShowController {
 	}
 
 	@RequestMapping(path = "/client/item/list/{sortType}", method = RequestMethod.POST)
-	public String list(Model model) {
+	public String list(@PathVariable int sortType, Model model) {
 		List<Item> items = itemRepository.findAll();
 		model.addAttribute("items", items);
-		System.out.println("こんにちは");
+		model.addAttribute("sortType", sortType);
 		return "client/item/list";
 	}
 
@@ -92,16 +92,8 @@ public class ClientItemShowController {
 
 		return "client/item/list";
 	}
-
-	//	@RequestMapping(path="/client/item/list/{sortType}/categoryId/{id}", method=RequestMethod.GET)
-	//	public String category(@PathVariable int sortType, @RequestParam Integer id, Model model) {
-	//		System.err.println("あいうえお");
-	//		
-	//		List<Item> itemList = itemRepository.findByCategoryId(id);
-	//		model.addAttribute("items", itemList);
-	//		return "redirect:/client/item/list";
-	//		
-	//	}
+	
+	
 	@RequestMapping(path = "/{sortType}", method = RequestMethod.GET)
 	public String showTopPageItems(@PathVariable int sortType, Model model) {
 		List<Item> item;
