@@ -9,7 +9,7 @@
 
 <body class="client user_regist_input_admin">
 	<h2 th:class="title" th:text="注文情報入力"></h2>
-	<p th:class="input_message" th:text="#{msg.order.address.input}" style="color:red"></p>
+	<p th:class="input_message" th:text="#{msg.order.address.input}"></p>
 
 	<div class="user_info_form_area">
 		<form th:action="@{/client/order/payment/input}" method="post" class="user_info_form" th:object="${orderForm}">

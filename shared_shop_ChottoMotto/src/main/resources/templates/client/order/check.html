@@ -33,7 +33,12 @@
 		<div th:each="items: ${session.orderItemBeans}">
 			<tr>
 				<td th:text="${items.name}"></td>
-				<td th:text="${items.image}"></td>
+				<td>
+					<img th:if="${items.image != null}" 
+					th:src="@{/images/{image}(image=${items.image})}" alt="Image" th:style="'width:100px; height: auto;'"></img>
+					<img th:if="${items.image == null}" 
+					th:src="@{/images/common/no_image.jpg}" alt="Image" th:style="'width:100px; height: auto;'"/></img>
+				</td>
 				<td th:text="${items.price}"></td>
 				<td th:text="${items.orderNum}"></td>
 				<td th:text="${items.subtotal}"></td>

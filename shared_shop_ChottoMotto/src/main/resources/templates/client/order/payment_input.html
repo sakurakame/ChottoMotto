@@ -24,7 +24,7 @@
 			<label>
 
 				<input  type="radio" name="paymentMethod" th:field="*{payMethod}" value="1"
-				th:checked="*{payMethod == 0}">
+				th:checked="${orderForm.setPayMethod(1)}">
 				クレジットカード
 			</label>
 			<br>
