@@ -223,14 +223,20 @@ public class ClientOrderRegistController {
 		@SuppressWarnings("unchecked")
 		List<BasketBean>  myBaskets = (List<BasketBean>)session.getAttribute("myBaskets");
 		
+		//orderにuserをセット,orderを作成
 		Integer id = ((UserBean)session.getAttribute("user")).getId();
 		User user = userDao.findById(id).orElseThrow();
+
+		Order order = new Order();
+		order.setUser(user);
+		BeanUtils.copyProperties(orderForm, order);
+
+		//orderに入れるList<OrderItems>のリスト、ここに注文詳細を入れていく
+		List<OrderItem> orderItems = new ArrayList<>();
 		
 
 		for(BasketBean goods :myBaskets) {
 			Item item = itemRepository.getReferenceById(goods.getId());
-			Order order = orderRepository.getReferenceById(goods.getId());
-			System.err.println(order.getAddress());
 			
 			if (goods.getStock() > item.getStock()) {
 				System.out.println("ここどうしよう");
@@ -252,17 +258,21 @@ public class ClientOrderRegistController {
 			orderItem.setItem(item);
 			orderItem.setPrice(item.getPrice());
 			
-			orderItemRepository.save(orderItem);
+						
+			orderItems.add(orderItem);
+			
+			
 		}	
 	
 		
 		
 		// 注文情報を元にDB登録用エンティティオブジェクトを生成し、注文テーブルおよび注文商品テーブルに登録を実施
-		Order setOrder = new Order();
-		setOrder.setUser(user);
-		BeanUtils.copyProperties(orderForm, setOrder);
-		orderRepository.save(setOrder);
-				
+		order.setOrderItemsList(orderItems);		
+		orderRepository.save(order);
+		
+		for (OrderItem orderItem : orderItems) {
+		    orderItemRepository.save(orderItem);
+		}
 		
 		// セッションスコープの注文入力フォーム情報と買い物かご情報を削除
 		session.removeAttribute("orderForm");
