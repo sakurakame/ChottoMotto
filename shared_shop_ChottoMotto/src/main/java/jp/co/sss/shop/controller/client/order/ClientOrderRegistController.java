@@ -171,13 +171,14 @@ public class ClientOrderRegistController {
 			item = itemRepository.getReferenceById(goods.getId());
 			if (item.getStock() == 0) {
 				System.err.println("在庫ないよ");
-				continue;
+				return "redirect:/client/order/check";
 			}
 			//在庫が注文数より少ない場合
 			// 在庫切れ商品の削除
 			else if (item.getStock() < goods.getOrderNum()) {
 				System.err.println("少ないよ");
 				goods.setOrderNum(item.getStock());
+				return "redirect:/client/order/check";
 			}
 			orderItemBean.setId(goods.getId());
 			orderItemBean.setName(goods.getName());
@@ -239,7 +240,6 @@ public class ClientOrderRegistController {
 			Item item = itemRepository.getReferenceById(goods.getId());
 			
 			if (goods.getStock() > item.getStock()) {
-				System.out.println("ここどうしよう");
 				return "redirect:/client/order/check";
 			}else if(item.getStock() == 0) {
 				return "redirect:/client/order/check";
