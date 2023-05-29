@@ -262,9 +262,7 @@ public class ClientOrderRegistController {
 			orderItems.add(orderItem);
 			
 			
-		}	
-	
-		
+		}			
 		
 		// 注文情報を元にDB登録用エンティティオブジェクトを生成し、注文テーブルおよび注文商品テーブルに登録を実施
 		order.setOrderItemsList(orderItems);		
