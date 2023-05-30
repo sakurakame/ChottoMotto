@@ -94,10 +94,10 @@ public class ClientOrderRegistController {
 		// 画面から入力されたフォーム情報を注文入力フォーム情報として保存
 		session.setAttribute("orderForm", orderForm);
 
-		// BindingResultオブジェクトに入力エラー情報がある場合
+		//Resultオブジェクトに入力エラー情報がある場合
 		if (bindingResult.hasErrors()) {
 			// エラー情報をセッションスコープに保存
-			session.setAttribute("errorInfo", bindingResult.getAllErrors());
+			session.setAttribute("result", bindingResult);
 
 			// 届け先入力画面表示処理にリダイレクト
 			return "redirect:/client/order/address/input";
